@@ -6,6 +6,7 @@
 !*.tex
 !*.bib
 !*.png
+!*.jpg
 # e le sottocartelle
 !*/
 
