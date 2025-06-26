@@ -1,0 +1,11 @@
+# Ignora tutto
+*
+
+# Ma non questi file:
+!.gitignore
+!*.tex
+!*.bib
+!*.png
+# e le sottocartelle
+!*/
+
