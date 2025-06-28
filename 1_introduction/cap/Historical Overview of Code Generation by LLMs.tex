@@ -1,3 +1,122 @@
 \clearpage
 \section{Historical Overview of Code Generation by LLMs}
 
+The history of code generation can be explored from several 
+perspectives. 
+
+\subsection{Natural Language Prcoessing} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+One possible starting point possible perspective for 
+analyzing the evolution of code generation is to trace 
+the development of Natural Language Processing (NLP), 
+the field that studies how machines process and interact 
+with human language. NLP comprises two major subdomains: 
+Natural Language Understanding (NLU), which focuses on a 
+machine's ability to interpret and "understand" human language, 
+and Natural Language Generation (NLG), which concerns the 
+generation of natural-sounding text.
+
+This distinction is particularly relevant because 
+the technologies currently used for code generation 
+are essentially the same as those employed for natural 
+language generation. In fact, Transformer-based models 
+trained on source code data approach code generation in 
+the same way they would handle natural text generation 
+by predicting sequences of tokens in context using learned 
+statistical patterns \cite{vaswani2017attention}.
+
+From this point of view we can start in the 1943 
+during World War II with
+the invention of Colossus, one of the first digital electronic computers, 
+developed in order to analyze encrypted
+communications from the German military.
+
+In parallel, the discipline of Natural Language Processing 
+(NLP) began to take shape as early as the 1940s, culminating 
+in the 1954 Georgetown experiment the first public demonstration 
+of machine translation. Another milestone came in 1966 with the 
+creation of ELIZA \cite{weizenbaum1966eliza}, considered the first 
+chatbot in history, which simulated the behavior of a psychotherapist 
+using pattern-matching rules.
+
+During the 1970s and 1980s, symbolic approaches to NLP became popular. 
+These early attempts aimed to enable machines to “understand” language 
+through manually encoded rules and logic-based systems. In the 1990s, 
+the importance of statistical methods became evident, marking a shift 
+from rule-based to probabilistic models for language processing.
+
+In 2006 Google launched its now ubiquitous Google 
+Translate service. The following decade saw the rise of voice-based 
+assistants: Apple’s Siri (2011), Microsoft’s Cortana (2014), 
+Amazon’s Alexa (2014), and Google Assistant (2016).
+
+A major breakthrough came with the introduction of distributed word 
+representations, especially word2vec \cite{mikolov2013efficient} and 
+GloVe \cite{pennington2014glove}, published in 2013 and 2014 respectively. 
+These methods enabled dense vector representations that captured semantic 
+relationships between words in large corpora.
+
+The most significant leap, however, occurred in 2017 with the publication 
+of the now seminal paper “Attention is All You Need” 
+\cite{vaswani2017attention}, which introduced the Transformer 
+architecture. This architecture remains the dominant framework in 
+NLP and underpins nearly all modern LLMs. Transformers enabled major 
+advances in tasks such as text generation, machine translation, 
+question answering, text summarization and, more recently, code 
+generation.
+
+The first LLMs capable of code generation began to appear around 
+2019–2020, notably with the release of GPT-2 \cite{radford2019language}. 
+In 2021, OpenAI released Codex \cite{chen2021codex}, a GPT-3 derivative 
+trained specifically for code generation and explanation, which was
+later integrated into GitHub Copilot.
+
+Between 2022 and 2024, a wave of new LLMs for code generation was 
+released, including CodeT5 \cite{wang2021codet5}, CodeGen 
+\cite{nijkamp2022codegen}, CodeGeeX \cite{zeng2022codegeex}, 
+and Code LLaMA \cite{roziere2023code}.
+
+
+\subsection{Code Generator} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Another possible point of view is the one focused on code 
+generation itself. This is not a recent development at all: 
+it dates back to 1957 with FORTRAN. FORTRAN is both a 
+programming language and a compiler, developed by IBM. 
+A compiler can be seen as a code generation tool, since it 
+translates source code into machine code — the only "language" 
+truly understandable by a computer \cite{backus1957fortran}.
+
+Compilers have a long history and have been continuously 
+improved over time, but they are not the only tools for code 
+generation. Already in 1976, the concept of intelligent editors 
+emerged with Emacs, thanks to its support for custom macros 
+\cite{stallman1981emacs}. Later, in 1996, Visual Basic 5 
+introduced symbolic completion, namely the ability of the IDE 
+to suggest code based on the context and the symbols already present.
+
+In 1999, with XSLT, one of the first standardized tools for 
+automatic transformation between markup languages was introduced 
+\cite{xslt1999}. During the same years, the work of Zelle and 
+Mooney (1996–1999) proposed methods based on Natural Language 
+rocessing to generate database queries from natural language 
+expressions \cite{zelle1996learning, mooney1997nlidb}.
+
+At the same time, template-engine-based tools spread, such as 
+Jinja2 (2005) and Mako (2006), which allowed the generation of 
+dynamic code by combining data with predefined structures 
+\cite{jinja2docs, makoengine}.
+
+In 2017, with research on AST-guided code generation, LSTM 
+models began to be used to generate code in a more structured 
+way, guided by the syntax of the programming language 
+\cite{yin2017syntactic}.
+
+Finally, in 2021, with GitHub Copilot, one of the most advanced 
+code completion tools was introduced: so efficient that it is 
+capable of generating entire code sections from simple textual 
+prompts, thanks to the use of generative AI models based on 
+Transformer architectures \cite{chen2021codex}.
+
+
+
+
+\subsection{LLM code generator} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
