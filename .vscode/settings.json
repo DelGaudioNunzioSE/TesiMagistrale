@@ -1,4 +1,6 @@
 {
-    "ltex.language": "en-GB"
+    "ltex.language": "en-GB",
+    "ltex.additionalRules.enablePickyRules": true,
+    "ltex.additionalRules.enableStyleRules": true
 
 }

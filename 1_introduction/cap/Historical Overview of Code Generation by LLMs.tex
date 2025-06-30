@@ -77,9 +77,10 @@ and Code LLaMA \cite{roziere2023code}.
 
 
 \subsection{Code Generator} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\label{sec:Code_Generator}
 Another possible point of view is the one focused on code 
 generation itself. This is not a recent development at all: 
-it dates back to 1957 with FORTRAN. FORTRAN is both a 
+it dates back to 1957 with Fortran. Fortran is both a 
 programming language and a compiler, developed by IBM. 
 A compiler can be seen as a code generation tool, since it 
 translates source code into machine code — the only "language" 
@@ -95,15 +96,15 @@ to suggest code based on the context and the symbols already present.
 
 In 1999, with XSLT, one of the first standardized tools for 
 automatic transformation between markup languages was introduced 
-\cite{xslt1999}. During the same years, the work of Zelle and 
-Mooney (1996–1999) proposed methods based on Natural Language 
+\cite{xslt1999}. During the same years, the work of Zelle\cite{zelle1996learning}
+and  Mooney\cite{mooney1997nlidb} (1996–1999) 
+proposed methods based on Natural Language 
 processing to generate database queries from natural language 
-expressions \cite{zelle1996learning, mooney1997nlidb}.
+expressions.
 
 At the same time, template-engine-based tools spread, such as 
-Jinja2 (2005) and Mako (2006), which allowed the generation of 
-dynamic code by combining data with predefined structures 
-\cite{jinja2docs, makoengine}. 
+Jinja2 (2005)\cite{jinja2docs} and Mako (2006)\cite{makoengine}, which allowed the generation of 
+dynamic code by combining data with predefined structures. 
 
 In 2017, with research on AST-guided code generation, LSTM 
 models began to be used to generate code in a more structured 
@@ -119,4 +120,96 @@ Transformer architectures \cite{chen2021codex}.
 
 
 
-\subsection{LLM code generator} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{LLMs code oriented} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Another possible starting point is from the publication of the 
+paper \textit{Attention Is All You Need} in 2017, which 
+introduced the Transformer architecture \cite{vaswani2017attention}
+and, enabled the widespread development of
+Large Language Models (LLMs). 
+We must remember that the first LLMs were typically designed to 
+analyse and generate just natural language text, so not all LLMs 
+were capable of generating code, or at least not of 
+generating syntactically correct or functional code 
+(no free lunch).
+
+In 2018, two foundational models were introduced: BERT 
+\cite{devlin2019bert}, an encoder-only architecture 
+designed to generate dense semantic representations of 
+natural language, and GPT-1 \cite{radford2018improving}, 
+a decoder-only model capable of generating coherent text. 
+Those models were not yet able to generate code, but they have been 
+an important baseline for future code-oriented models.
+
+In fact in 2019, OpenAI released GPT-2 \cite{radford2019language}, 
+a more powerful decoder-only model capable of producing much 
+more convincing text compared to GPT-1. Although GPT-2 was 
+not specifically trained to generate code, its training 
+corpus included code snippets. In the same year, 
+TabNine, a popular code completion extension for several IDEs, 
+replaced its n-gram-based next-token prediction with a version 
+of GPT-2 fine-tuned on source code \cite{tabnine2019}.
+
+Also in 2019, Microsoft Research and GitHub introduced the 
+CodeSearchNet dataset \cite{husain2019codesearchnet}, a 
+multilingual code dataset and one of the first large-scale 
+corpora usable to train Transformers for code generation tasks.
+
+In 2020, Microsoft Research released CodeBERT 
+\cite{feng2020codebert} \textit{(based on BERT)}, 
+trained on both natural 
+language and code using the CodeSearchNet dataset. 
+CodeBERT is designed for tasks such as code search 
+and code summarization. While it does not generate code, 
+it is an encoder-only model capable of deeply understanding 
+the structure and semantics of source code. Through 
+CodeBERT is possible producing rich 
+and dense representations suitable for downstream tasks like 
+classification, or for use as input to decoders in generative 
+pipelines.
+
+In 2021, several LLMs capable of generating realistic and 
+reliable code were introduced. OpenAI published Codex 
+\cite{chen2021codex}, a GPT-3 derivative fine-tuned on 
+source code from the GitHub Code dataset. In the same paper 
+OpenAI introduced the HumanEval benchmark, designed to assess the 
+performance of Codex on programming problems 
+\textit{(and in future all LLMs code oriented)}.
+On HumanEval, Codex (12B) was able to solve 28.8\% 
+of the problems on the 
+first attempt, significantly outperforming all previous 
+models on code generation.
+
+Codex sparked widespread interest in the use of LLMs 
+for code generation, indeed in the same year is released 
+GitHub Copilot, powered by Codex.
+
+In the same year, several additional datasets were 
+published, including MBPP (Mostly Basic Python Problems) 
+\cite{austin2021mbpp}, the APPS dataset \cite{hendrycks2021apps}, 
+and CodeXGLUE \cite{lu2021codexglue}.
+
+In December 2021, Salesforce AI Research released CodeT5 
+\cite{wang2021codet5}, an open-source encoder-decoder 
+model that, unlike Codex, supports a wider variety of 
+code-related tasks. Thanks to task-specific training strategies, 
+CodeT5 proved to be highly versatile, supporting code 
+summarization, generation, and translation.
+
+In 2022, Google introduced AlphaCode \cite{li2022alphacode}, 
+achieving a performance in the top 54.3 percentile on 
+competitive programming tasks on Codeforces. In the same 
+year, PolyCoder \cite{xu2022polycoder}, a decoder-only 
+model trained solely on 249 GB of source code, was also 
+released as an open-source alternative. 
+
+In 2023, GPT-4 \cite{openai2023gpt4} (although not 
+exclusively trained for code generation)  
+achieved an 80\% success rate on HumanEval. 
+Claude 3 by Anthropic reportedly reached 85\%, 
+and Meta’s open-source model Code LLaMA 
+\cite{roziere2023code} scored 57\%.
+
+In 2024, Google introduced Gemini \cite{google2024gemini}, 
+which, when integrated into the AlphaCode 2 framework, 
+reached performance within the top 15\% of coding competition 
+participants.
