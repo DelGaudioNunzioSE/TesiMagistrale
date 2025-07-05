@@ -1,4 +1,76 @@
 \clearpage
 
 \chapter{Overview of current state of the art}
-Study of the state of the art on detection systems for LLM-generated text, with particular reference to early work focused on source code, for example,
+
+Before analysing the individual contributions, 
+it is necessary to understand the current state 
+of the art. As discussed in
+\hyperref[sec:Challenges in LLM-Generated Code Detection]{Section 1.1.3}, 
+there are no widely established or consolidated 
+approaches for detecting LLM-generated code. However, 
+this does not imply a lack of research on the topic. 
+
+A subset of existing works focuses solely on 
+providing datasets for training and evaluating 
+detection models. The majority, instead, aim to 
+propose detection techniques, including zero-shot 
+approaches or methods requiring deep neural networks.
+
+Since this area has only started to be actively 
+explored around 2024, a significant portion of the 
+literature has been published on platforms such as 
+\href{https://arxiv.org/abs/2301.11305}{arXiv}. 
+Although arXiv is extremely useful for 
+identifying cutting-edge research, it primarily hosts 
+\textbf{preprints} (papers which have not yet undergone 
+peer review by the scientific community).
+
+This does not mean that arXiv publications should 
+be disregarded, but the fact that most work in this 
+area remains unpublished in peer-reviewed venues 
+highlights the early and still-developing nature 
+of this research topic.
+
+\section*{Preprints}
+\begin{itemize}
+  %[1] CoDet_M4 ->[dataset] Orel
+  \item \textbf{CoDet-M4} \cite{orel2025codet}: Presentation of a dataset 
+  obtained by using six different LLMs.
+
+  %[2] AIGCodeSe -> [dataset] Demirok
+  \item \textbf{AIGCodeSet} \cite{demirok2024aigcodeset}: Presentation of a python dataset 
+  obtained by using three different LLMs.
+
+  %[22] -> codemirage [dataset]
+  \item \textbf{CodeMirage} \cite{guo2025codemirage}: !
+
+  %[3] How far are we -> [paragone] Suh
+  \item \textbf{How Far Are We?} \cite{suh2024empirical}: Analysis of Natural Language Methods 
+  Applied to Code, the GPTSniffer Tool, and the Proposal of Alternative Detection Approaches.
+  
+  %[8] DetectGPT4Code -> [detection zero] Yang
+  \item \textbf{DetectGPT4Code} \cite{yang2023zero}: Uncovering LLM-Generated Code: A Zero-Shot 
+  Synthetic Code Detector via Code Rewriting. In Proceedings of the AAAI 
+  Conference on Artificial Intelligence.
+
+\end{itemize}
+
+
+
+\section*{Peer-reviewed paper}
+\begin{itemize}
+    % [6] Paper originale -> [constrastive] Ye
+    \item \textbf{Uncovering LLM-Generated Code} \cite{ye2025uncovering}: 
+    Proposal of a Detection Method Based on Code Rewriting and a Custom-Trained Similarity Model.
+
+    % [9] DetectCodeGPT -> [detection zero] Shi
+    \item \textbf{DetectCodeGPT} \cite{shi2024between}: 
+    Analysis of Differences Between Human-Written Code and LLM-Generated Code, 
+    and Introduction of a Detector Based on Purely Stylistic Perturbations.
+    
+    % [21] -> [detection zero] Xu, Zhenyu
+    \item \textbf{Detecting AI-Generated Code Assignments Using Perplexity} \cite{xu2024detecting}: 
+    Proposal of a Detector Based on Perturbation.
+    
+
+\end{itemize}
