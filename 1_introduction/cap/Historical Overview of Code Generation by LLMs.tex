@@ -79,18 +79,18 @@ and Code LLaMA \cite{roziere2023code}.
 \subsection{Code Generator} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \label{sec:Code_Generator}
 Another possible point of view is the one focused on code 
-generation itself. This is not a recent development at all: 
+generation itself. This is not a  completely new concept: 
 it dates back to 1957 with Fortran. Fortran is both a 
-programming language and a compiler, developed by IBM. 
+programming language with an integrated compiler, developed by IBM. 
 A compiler can be seen as a code generation tool, since it 
-translates source code into machine code — the only "language" 
-truly understandable by a computer \cite{backus1957fortran}.
+translates source code into machine code, the only “language” 
+truly “understandable” by a computer \cite{backus1957fortran}.
 
 Compilers have a long history and have been continuously 
 improved over time, but they are not the only tools for code 
 generation. Already in 1976, the concept of intelligent editors 
 emerged with Emacs, thanks to its support for custom macros 
-\cite{stallman1981emacs}. Later, in 1996, Visual Basic 5 
+\cite{stallman1981emacs}. Later, in 1996, IntelliSense 
 introduced symbolic completion, namely the ability of the IDE 
 to suggest code based on the context and the symbols already present.
 
@@ -102,8 +102,10 @@ proposed methods based on Natural Language
 processing to generate database queries from natural language 
 expressions.
 
-At the same time, template-engine-based tools spread, such as 
-Jinja2 (2005)\cite{jinja2docs} and Mako (2006)\cite{makoengine}, which allowed the generation of 
+At the same time, template-engine-based tools  for server-side 
+spread, such as Jinja2 (2005)\cite{jinja2docs} 
+and Mako (2006)\cite{makoengine}, 
+which allowed the generation of 
 dynamic code by combining data with predefined structures. 
 
 In 2017, with research on AST-guided code generation, LSTM 
@@ -129,8 +131,7 @@ Large Language Models (LLMs).
 We must remember that the first LLMs were typically designed to 
 analyse and generate just natural language text, so not all LLMs 
 were capable of generating code, or at least not of 
-generating syntactically correct or functional code 
-(no free lunch).
+generating syntactically correct or functional code.
 
 In 2018, two foundational models were introduced: BERT 
 \cite{devlin2019bert}, an encoder-only architecture 
@@ -183,9 +184,10 @@ Codex sparked widespread interest in the use of LLMs
 for code generation, indeed in the same year is released 
 GitHub Copilot, powered by Codex.
 
-In the same year, several additional datasets were 
+In the same year, 
+many additional datasets were 
 published, including MBPP (Mostly Basic Python Problems) 
-\cite{austin2021mbpp}, the APPS dataset \cite{hendrycks2021apps}, 
+\cite{austin2021program}, the APPS dataset \cite{hendrycks2021measuring}, 
 and CodeXGLUE \cite{lu2021codexglue}.
 
 In December 2021, Salesforce AI Research released CodeT5 
@@ -195,10 +197,10 @@ code-related tasks. Thanks to task-specific training strategies,
 CodeT5 proved to be highly versatile, supporting code 
 summarization, generation, and translation.
 
-In 2022, Google introduced AlphaCode \cite{li2022alphacode}, 
+In 2022, Google introduced AlphaCode \cite{li2022competition}, 
 achieving a performance in the top 54.3 percentile on 
 competitive programming tasks on Codeforces. In the same 
-year, PolyCoder \cite{xu2022polycoder}, a decoder-only 
+year, PolyCoder \cite{xu2022systematic}, a decoder-only 
 model trained solely on 249 GB of source code, was also 
 released as an open-source alternative. 
 
@@ -209,7 +211,7 @@ Claude 3 by Anthropic reportedly reached 85\%,
 and Meta’s open-source model Code LLaMA 
 \cite{roziere2023code} scored 57\%.
 
-In 2024, Google introduced Gemini \cite{google2024gemini}, 
-which, when integrated into the AlphaCode 2 framework, 
+In 2024, Google introduced Gemini \cite{AlphaCode_2}, 
+which, when integrated into an inspired AlphaCode framework, 
 reached performance within the top 15\% of coding competition 
 participants.
