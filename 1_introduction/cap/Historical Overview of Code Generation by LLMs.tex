@@ -66,7 +66,7 @@ generation.
 
 The first LLMs capable of code generation began to appear around 
 2019–2020, notably with the release of GPT-2 \cite{radford2019language}. 
-In 2021, OpenAI released Codex \cite{chen2021codex}, a GPT-3 derivative 
+In 2021, OpenAI released Codex \cite{chen2021codex}, a GPT-3 \cite{brown2020language} derivative 
 trained specifically for code generation and explanation, which was
 later integrated into GitHub Copilot.
 
@@ -170,19 +170,19 @@ pipelines.
 
 In 2021, several LLMs capable of generating realistic and 
 reliable code were introduced. OpenAI published Codex 
-\cite{chen2021codex}, a GPT-3 derivative fine-tuned on 
+\cite{chen2021codex}, a GPT-3 \cite{brown2020language} derivative fine-tuned on 
 source code from the GitHub Code dataset. In the same paper 
 OpenAI introduced the HumanEval benchmark, designed to assess the 
-performance of Codex on programming problems 
+performance of Codex \cite{chen2021codex} on programming problems 
 \textit{(and in future all LLMs code oriented)}.
 On HumanEval, Codex (12B) was able to solve 28.8\% 
 of the problems on the 
 first attempt, significantly outperforming all previous 
 models on code generation.
 
-Codex sparked widespread interest in the use of LLMs 
+Codex \cite{chen2021codex} sparked widespread interest in the use of LLMs 
 for code generation, indeed in the same year is released 
-GitHub Copilot, powered by Codex.
+GitHub Copilot, powered by Codex \cite{chen2021codex}.
 
 In the same year, 
 many additional datasets were 
@@ -192,7 +192,7 @@ and CodeXGLUE \cite{lu2021codexglue}.
 
 In December 2021, Salesforce AI Research released CodeT5 
 \cite{wang2021codet5}, an open-source encoder-decoder 
-model that, unlike Codex, supports a wider variety of 
+model that, unlike Codex \cite{chen2021codex}, supports a wider variety of 
 code-related tasks. Thanks to task-specific training strategies, 
 CodeT5 proved to be highly versatile, supporting code 
 summarization, generation, and translation.

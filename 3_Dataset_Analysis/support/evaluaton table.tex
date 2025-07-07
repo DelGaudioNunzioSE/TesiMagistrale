@@ -1,0 +1,43 @@
+% Riga fissa con campo modificabile
+\newcommand{\rowMetric}[2]{#1 & #2 \\ \hline}
+
+
+\newcommand{\sectionHeaderCentered}[1]{%
+  \addlinespace[1ex]
+  \multicolumn{2}{c}{\textbf{#1}} \\
+  \addlinespace[0.5ex]\midrule
+}
+
+% Tabella principale: usa un comando esterno per riempire la seconda colonna
+\newcommand{\evaluationTable}[1]{
+\begin{table}[H]
+\centering
+\begin{tabularx}{\linewidth}{|p{7.5cm}|X|}
+
+\hline
+\sectionHeaderCentered{Total number of code samples available}
+\rowMetric{(a) Total number of human code}{\csname #1HumanCode\endcsname}
+\rowMetric{(b) Total number of LLMs code}{\csname #1LLMCode\endcsname}
+
+\sectionHeaderCentered{LLMs used to generate synthetic code}
+\rowMetric{(a) Number of LLMs}{\csname #1NumLLMs\endcsname}
+\rowMetric{(b) Diversity among LLMs}{\csname #1LLMDiversity\endcsname}
+\rowMetric{(c) Actual degree of use in contemporary times}{\csname #1CurrentUse\endcsname}
+
+\sectionHeaderCentered{Code diversity}
+\rowMetric{(a) Different programming languages}{\csname #1Languages\endcsname}
+\rowMetric{(b) Different types of code}{\csname #1CodeTypes\endcsname}
+\rowMetric{(c) Code size}{\csname #1CodeSize\endcsname}
+\rowMetric{(d) Code context}{\csname #1CodeContext\endcsname}
+
+\sectionHeaderCentered{Validity information}
+\rowMetric{(a) Generation prompts}{\csname #1Prompts\endcsname}
+\rowMetric{(b) Source of human-written code}{\csname #1Sources\endcsname}
+\rowMetric{(c) Code quality}{\csname #1CodeQuality\endcsname}
+\rowMetric{(d) Paper reliability perception}{\csname #1Reliability\endcsname}
+
+\hline
+\end{tabularx}
+\caption{Evaluation Summary: #1 Dataset}
+\end{table}
+}
