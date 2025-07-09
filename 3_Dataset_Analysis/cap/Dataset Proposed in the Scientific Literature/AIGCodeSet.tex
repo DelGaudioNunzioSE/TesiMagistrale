@@ -1,1 +1,64 @@
 \subsection{AIGCodeSet}
+The main contribution of this paper is also the preparation 
+of a dataset for evaluating detection methods. Unlike other 
+works, this dataset includes both functional and non-functional 
+human-written code, as it evaluates LLM code generation starting 
+both from a plain prompt and from existing code.
+
+
+\begin{itemize}
+    \item \textbf{Gemini 1.5 Flash} \cite{team2024gemini} : 
+    Proprietary, available via Google Cloud’s Gemini API and Vertex AI; 
+    no public weights. Multimodal corpora including code, text, images, 
+    audio, and video; extends context handling to millions of tokens. 
+    \item \textbf{Codestral-22B} \cite{mistral-codestral-2024} : 
+    Autoregressive code modeling with fill‑in‑the‑middle (FIM) 
+    capability; excels at cross‑file completion tasks.
+    \item \textbf{CodeLlama-34B} \cite{roziere2023code} :
+    State‑of‑the‑art among open models on HumanEval.
+\end{itemize}
+
+
+
+
+%%%%
+%%%%
+
+\subsubsection*{Strengths}
+\begin{itemize}
+    \item They evaluate LLM code generation under three different scenarios:
+    \begin{itemize}
+        \item textual problem descriptions taken from CodeNet (problem prompt);
+        \item problem prompt + human source code with a runtime error;
+        \item problem prompt + human source code with an output error.
+    \end{itemize}
+\end{itemize}
+
+
+%%%%
+%%%%
+\subsubsection*{Weaknesses}
+\begin{itemize}
+    \item OI
+\end{itemize}
+
+
+\subsubsection*{Final evaluation}
+
+
+\expandafter\def\csname AIGCodeSetHumanCode\endcsname{q}
+\expandafter\def\csname AIGCodeSetLLMCode\endcsname{q}
+\expandafter\def\csname AIGCodeSetNumLLMs\endcsname{q}
+\expandafter\def\csname AIGCodeSetLLMDiversity\endcsname{q}
+\expandafter\def\csname AIGCodeSetCurrentUse\endcsname{2024 \textit{now exist Gemini-2.0}}
+\expandafter\def\csname AIGCodeSetLanguages\endcsname{Python, C++, Java, Ruby}
+\expandafter\def\csname AIGCodeSetCodeTypes\endcsname{unspecified}
+\expandafter\def\csname AIGCodeSetCodeSize\endcsname{1\textsuperscript{st} percentile: _ words,\newline 3\textsuperscript{rd} percentile: _ words}
+\expandafter\def\csname AIGCodeSetCodeContext\endcsname{q}
+\expandafter\def\csname AIGCodeSetPrompts\endcsname{q}
+\expandafter\def\csname AIGCodeSetSources\endcsname{q}
+\expandafter\def\csname AIGCodeSetCodeQuality\endcsname{q}
+\expandafter\def\csname AIGCodeSetReliability\endcsname{q}
+
+
+\evaluationTable{AIGCodeSet}

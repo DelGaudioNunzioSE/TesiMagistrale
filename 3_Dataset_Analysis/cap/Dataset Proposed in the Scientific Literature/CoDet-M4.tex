@@ -9,15 +9,15 @@ the effectiveness of various code detection models.
 The authors employ the following models as code generators:
 
 \begin{itemize}
-    \item \textbf{GPT-4o}: A proprietary model developed by OpenAI, selected to represent the state-of-the-art among large-scale, closed-source LLMs.
+    \item \textbf{GPT-4o} \cite{openai_gpt4o_2024} : A proprietary model developed by OpenAI, selected to represent the state-of-the-art among large-scale, closed-source LLMs.
     
-    \item \textbf{CodeLlama (7B)}: An open-source model by Meta, specifically trained for code-related tasks. It is one of the most popular code-oriented language models.
+    \item \textbf{CodeLlama (7B)} \cite{roziere2023code} : An open-source model by Meta, specifically trained for code-related tasks. It is one of the most popular code-oriented language models.
     
-    \item \textbf{Llama3.1 (8B)}: A more recent version of Meta’s Llama family. Although it is a general-purpose model, it exhibits strong performance in code generation.
+    \item \textbf{Llama3.1 (8B)} \cite{meta_llama3_1_2024} : A more recent version of Meta’s Llama family. Although it is a general-purpose model, it exhibits strong performance in code generation.
     
-    \item \textbf{CodeQwen 1.5 (7B)}: An open-source model from Alibaba Cloud, also specialized in code, and part of the Qwen series.
+    \item \textbf{CodeQwen 1.5 (7B)} \cite{qwen_codeqwen1.5_blog_2024} : An open-source model from Alibaba Cloud, also specialized in code, and part of the Qwen series.
     
-    \item \textbf{Nxcode-orpo (7B)}: A fine-tuned variant of CodeQwen. The authors include it to evaluate the robustness of detectors against different fine-tuning strategies applied to the same base model (in this case, ORPO – Monolithic Preference Optimization).
+    \item \textbf{Nxcode-orpo (7B)} \cite{ntqa_nxcode_dataloop_2024} : A fine-tuned variant of CodeQwen. The authors include it to evaluate the robustness of detectors against different fine-tuning strategies applied to the same base model (in this case, ORPO – Monolithic Preference Optimization).
 \end{itemize}
 
 
@@ -137,11 +137,11 @@ The authors employ the following models as code generators:
 \expandafter\def\csname CoDetM4HumanCode\endcsname{246,221}
 \expandafter\def\csname CoDetM4LLMCode\endcsname{254,331}
 \expandafter\def\csname CoDetM4NumLLMs\endcsname{6 LLMs: \textit{(GPT-4o, CodeLlama 7B, Llama3.1 8B, CodeQwen 1.5 7B, Nxcode-orpo 7B )}}
-\expandafter\def\csname CoDetM4LLMDiversity\endcsname{3 different source models: \textit{(GPT-4o,CodeLlama,CodeQwen) }}
-\expandafter\def\csname CoDetM4CurrentUse\endcsname{High}
+\expandafter\def\csname CoDetM4LLMDiversity\endcsname{3 different source models: \textit{(GPT-4o, CodeLlama, CodeQwen) }}
+\expandafter\def\csname CoDetM4CurrentUse\endcsname{Average LLMs release date: 2024}
 \expandafter\def\csname CoDetM4Languages\endcsname{Python, Java, C++}
 \expandafter\def\csname CoDetM4CodeTypes\endcsname{Functional, Object-Oriented \textit{(missing information in the dataset)}}
-\expandafter\def\csname CoDetM4CodeSize\endcsname{1\textsuperscript{st} percentile: 42 characters,\newline 3\textsuperscript{rd} percentile: 68 characters}
+\expandafter\def\csname CoDetM4CodeSize\endcsname{1\textsuperscript{st} percentile: 42 words,\newline 3\textsuperscript{rd} percentile: 68 words}
 \expandafter\def\csname CoDetM4CodeContext\endcsname{Mixed (competitive and open-source)}
 \expandafter\def\csname CoDetM4Prompts\endcsname{Provided (different between LLMs)}
 \expandafter\def\csname CoDetM4Sources\endcsname{GitHub, Codeforces \cite{CodeforcesKaggle}, Pan et al. \cite{pan2024assessing}}
