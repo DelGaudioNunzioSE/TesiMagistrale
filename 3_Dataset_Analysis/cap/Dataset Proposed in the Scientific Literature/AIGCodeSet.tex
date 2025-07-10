@@ -26,12 +26,17 @@ both from a plain prompt and from existing code.
 
 \subsubsection*{Strengths}
 \begin{itemize}
-    \item They evaluate LLM code generation under three different scenarios:
+    \item They evaluate LLM code generation under three different scenarios 
+    {(\scriptsize\textit{Section 3.2:Generating Code Snippets})}:
     \begin{itemize}
         \item textual problem descriptions taken from CodeNet (problem prompt);
         \item problem prompt + human source code with a runtime error;
         \item problem prompt + human source code with an output error.
     \end{itemize}
+    \item The official dataset on 
+    \href{{https://huggingface.co/datasets/basakdemirok/AIGCodeSet}}{huggingface}
+    is well documented. 
+    \item The problems are of varying difficulty.
 \end{itemize}
 
 
@@ -39,26 +44,43 @@ both from a plain prompt and from existing code.
 %%%%
 \subsubsection*{Weaknesses}
 \begin{itemize}
-    \item OI
+    \item The dataset contains python code only.
+    \item The dataset contain competitive code only.
+    \item All the codes are solution of \textbf{only 300 problems} 
+    \textit{(60 problem x 5 different difficulty)}
+    \item GPT, probably the most widely LLM family 
+    used among students, is not 
+    included among the evaluated models.
+    \item The code samples were filtered only for obvious errors, 
+    but their outputs were not checked.
 \end{itemize}
 
 
+%%%%
+%%%%
 \subsubsection*{Final evaluation}
 
 
-\expandafter\def\csname AIGCodeSetHumanCode\endcsname{q}
-\expandafter\def\csname AIGCodeSetLLMCode\endcsname{q}
-\expandafter\def\csname AIGCodeSetNumLLMs\endcsname{q}
-\expandafter\def\csname AIGCodeSetLLMDiversity\endcsname{q}
-\expandafter\def\csname AIGCodeSetCurrentUse\endcsname{2024 \textit{now exist Gemini-2.0}}
-\expandafter\def\csname AIGCodeSetLanguages\endcsname{Python, C++, Java, Ruby}
+\expandafter\def\csname AIGCodeSetHumanCode\endcsname{4,755}
+\expandafter\def\csname AIGCodeSetLLMCode\endcsname{2,828}
+\expandafter\def\csname AIGCodeSetNumLLMs\endcsname{3 \textit{Gemini 1.5 Flash, Codestral-22B, CodeLlama-34B}}
+\expandafter\def\csname AIGCodeSetLLMDiversity\endcsname{3 different source models}
+\expandafter\def\csname AIGCodeSetCurrentUse\endcsname{Average LLMs release date: 2024 \textit{now exist Gemini-2.0}}
+\expandafter\def\csname AIGCodeSetLanguages\endcsname{Python}
 \expandafter\def\csname AIGCodeSetCodeTypes\endcsname{unspecified}
-\expandafter\def\csname AIGCodeSetCodeSize\endcsname{1\textsuperscript{st} percentile: _ words,\newline 3\textsuperscript{rd} percentile: _ words}
-\expandafter\def\csname AIGCodeSetCodeContext\endcsname{q}
-\expandafter\def\csname AIGCodeSetPrompts\endcsname{q}
-\expandafter\def\csname AIGCodeSetSources\endcsname{q}
-\expandafter\def\csname AIGCodeSetCodeQuality\endcsname{q}
-\expandafter\def\csname AIGCodeSetReliability\endcsname{q}
+\expandafter\def\csname AIGCodeSetCodeSize\endcsname{1\textsuperscript{st} percentile: 30 words,\newline 3\textsuperscript{rd} percentile: 50 words}
+\expandafter\def\csname AIGCodeSetCodeContext\endcsname{competitive}
+\expandafter\def\csname AIGCodeSetPrompts\endcsname{provided}
+\expandafter\def\csname AIGCodeSetSources\endcsname{CodeNet by IBM \cite{puri2021codenet}}
+\expandafter\def\csname AIGCodeSetCodeQuality\endcsname{filtered by human \textit{(not evaluated
+actual functionality of the code)}}
+\expandafter\def\csname AIGCodeSetReliability\endcsname{Hight}
 
 
 \evaluationTable{AIGCodeSet}
+
+
+The dataset appears to be of high quality, but compared to other works, 
+the variety of code is extremely limited.
+Moreover, GPT is not included among the LLMs, and there is no guarantee that 
+the LLM-generated code actually functions correctly.

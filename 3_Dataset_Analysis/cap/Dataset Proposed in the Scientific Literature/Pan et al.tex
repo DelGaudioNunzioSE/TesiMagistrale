@@ -1,0 +1,80 @@
+\subsection{Pan et al}
+The main objective of this paper is to demonstrate, 
+beyond any doubt, that detection methods commonly used for 
+natural language are not reliable when applied to code. 
+To achieve this, the authors construct a dedicated dataset.
+
+
+\begin{itemize}
+    \item \textbf{GPT}: In the paper is not specified what gpt.
+\end{itemize}
+
+%%%%
+%%%%
+
+\subsubsection*{Strengths}
+\begin{itemize}
+    \item Generate code by different Prompt.
+    \begin{itemize}
+        \item Prompt explaining the problem and asking for a solution;
+        \item Removal of stop words from the prompt;
+        \item Request to imitate a human;
+        \item Request to generate code without any comments;
+        \item Request to also generate testing code;
+        \item Solution with generic test cases not specifically tailored to the generated code;
+        \item Solution using the unfittest framework;
+        \item Explicit request for a long code;
+        \item Explicit request for a short code.
+    \end{itemize}
+    \item Use different paraphrasing method.
+    \begin{itemize}
+        \item Replacement of variable names;
+        \item Replacement of function names;
+        \item Replacement of both variable and function names;
+        \item Addition of unnecessary code to the solution.
+    \end{itemize}
+\end{itemize}
+
+
+%%%%
+%%%%
+\subsubsection*{Weaknesses}
+\begin{itemize}
+    \item The dataset is not available on hugging face but is necessary
+    download it from a 
+    \href{{https://figshare.com/articles/dataset/Replication_Package/24298036?file=42649573}}{Replication Package}
+    \item In the paper is not specified what gpt is used in order to generate code.
+    \item Only competitive code.
+    \item The paper mention a \textit{"manual valiation to ensure the correctness of the dataset"}
+    but it is not specialized what this validation consists.
+\end{itemize}
+
+
+%%%%
+%%%%
+\subsubsection*{Final evaluation}
+
+
+\expandafter\def\csname Pan-et-alHumanCode\endcsname{5,069}
+\expandafter\def\csname Pan-et-alLLMCode\endcsname{65,897}
+\expandafter\def\csname Pan-et-alNumLLMs\endcsname{1 \textit{GPT}}
+\expandafter\def\csname Pan-et-alLLMDiversity\endcsname{1}
+\expandafter\def\csname Pan-et-alCurrentUse\endcsname{unspecified}
+\expandafter\def\csname Pan-et-alLanguages\endcsname{Python}
+\expandafter\def\csname Pan-et-alCodeTypes\endcsname{unspecified}
+\expandafter\def\csname Pan-et-alCodeSize\endcsname{1\textsuperscript{st} percentile: 54 words,\newline 3\textsuperscript{rd} percentile: 83 words}
+\expandafter\def\csname Pan-et-alCodeContext\endcsname{competitive}
+\expandafter\def\csname Pan-et-alPrompts\endcsname{provided}
+\expandafter\def\csname Pan-et-alSources\endcsname{ Quescol \cite{quescol2023}, Kaggle \cite{wikipediaKaggle2023}}
+\expandafter\def\csname Pan-et-alCodeQuality\endcsname{filtered by human \textit{(not evaluated
+actual functionality of the code)}}
+\expandafter\def\csname Pan-et-alReliability\endcsname{Peer-review paper}
+
+
+\evaluationTable{Pan-et-al}
+Despite the reliability of this work, given that it is a peer-reviewed paper, 
+the dataset consists of only a single programming language and a single LLM 
+(which is known to be GPT, though the specific version is not disclosed). 
+Moreover, it is not explicitly stated whether the generated code is actually 
+functional.
+
