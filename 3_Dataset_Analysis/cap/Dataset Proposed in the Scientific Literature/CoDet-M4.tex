@@ -1,4 +1,5 @@
 \subsection{CoDet-M4}
+\label{section:CoDet-M4}
 The main contribution of this work is the construction 
 of a dataset derived from existing human-written code datasets, 
 by generating synthetic code using six different LLMs. 
@@ -76,10 +77,24 @@ The authors employ the following models as code generators:
 \end{itemize}
 
 
-\clearpage %%%%%%%%%%%%%%%%%%%%%%%% IMGS
+
+
+
+
+\subsubsection*{Code Quality}
+In order to preserve quality in the LLMs code source:
+\begin{itemize}
+    \item \textit{"For LLM-generated code, we filtered irrelevant responses and extracted code from the LLM output."}
+    \item \textit{"After collecting the datasets, we \textbf{removed all comments and docstrings}."}
+    \item \textit{"We also filtered codes based on length, excluding those below the 5th or above the 95th percentile in token count."}
+    \item \textit{"Finally, we deduplicated the dataset to prevent potential code memorization."}
+\end{itemize}
+
+
+ %%%%%%%%%%%%%%%%%%%%%%%% IMGS
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.3\textwidth]{img/CoDet-M4/tab1.pdf}
+    \includegraphics[width=0.5\textwidth]{img/CoDet-M4/tab1.pdf}
     \caption{Table of dataset number of codes}
     \label{fig:tabella-risultati}
 \end{figure}
@@ -111,22 +126,20 @@ The authors employ the following models as code generators:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.4\textwidth]{img/CoDet-M4/models.png}
+    \includegraphics[width=0.6\textwidth]{img/CoDet-M4/models.png}
     \caption{LLMs codes distribution}
     \label{fig:LLMs_codes}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.4\textwidth]{img/CoDet-M4/lc_less.png}
+    \includegraphics[width=0.6\textwidth]{img/CoDet-M4/lc_less.png}
     \caption{human-written code distribution}
     \label{fig:human-written_code_distribution}
 \end{figure}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
 
 \clearpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % TABLE
@@ -144,7 +157,7 @@ The authors employ the following models as code generators:
 \expandafter\def\csname CoDetM4CodeContext\endcsname{Mixed (competitive and open-source)}
 \expandafter\def\csname CoDetM4Prompts\endcsname{Provided (different between LLMs)}
 \expandafter\def\csname CoDetM4Sources\endcsname{GitHub, Codeforces \cite{CodeforcesKaggle}, Pan et al. \cite{pan2024assessing}}
-\expandafter\def\csname CoDetM4CodeQuality\endcsname{Evaluated and filtered}
+\expandafter\def\csname CoDetM4CodeQuality\endcsname{Comment removal, Duplicate code removal}
 \expandafter\def\csname CoDetM4Reliability\endcsname{Low, missing or inconsistent information}
 
 

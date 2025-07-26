@@ -1,9 +1,20 @@
 \subsection{Suh et al}
-
+The goal of this paper is both to evaluate detectors 
+originally designed for natural language (which, as 
+expected, proved to be ineffective), and to propose 
+alternative approaches, including fine-tuning 
+LLMs, an approach that was effective only for code 
+belonging to the same training domain. To achieve 
+these results, the authors developed a large dataset, 
+which should therefore be rightly considered as a 
+separate contribution.
 
 
 \begin{itemize}
-    \item \textbf{GPT}: 
+    \item \textbf{GPT (GPT-3.5)}: 
+    \item \textbf{GPT-4}: 
+    \item \textbf{Gemini Pro (Gemini 1.0)}: 
+    \item \textbf{Starcoder2-Insgruct (15B)}: 
 \end{itemize}
 
 %%%%
@@ -11,7 +22,12 @@
 
 \subsubsection*{Strengths}
 \begin{itemize}
-    \item G
+    \item Use different domain dataset.
+    \begin{itemize}
+        \item \textbf{MBPP}: didactic dataset
+        \item \textbf{humaneEval-x}: a dataset form OpenAI
+        \item \textbf{Code Search Net}: 
+    \end{itemize}
 \end{itemize}
 
 
@@ -19,7 +35,16 @@
 %%%%
 \subsubsection*{Weaknesses}
 \begin{itemize}
-    \item T
+    \item It is difficult to obtain the dataset
+    (Dataset creation is not the aim of the paper).
+\end{itemize}
+
+
+
+\subsubsection*{Code Quality}
+In order to preserve quality in the LLMs code source:
+\begin{itemize}
+    \item \textit{"We also removed code snippets that contain syntax errors"}
 \end{itemize}
 
 
@@ -28,22 +53,28 @@
 \subsubsection*{Final evaluation}
 
 
-\expandafter\def\csname Suh-et-alHumanCode\endcsname{5,069}
-\expandafter\def\csname Suh-et-alLLMCode\endcsname{65,897}
-\expandafter\def\csname Suh-et-alNumLLMs\endcsname{1 \textit{GPT}}
-\expandafter\def\csname Suh-et-alLLMDiversity\endcsname{1}
-\expandafter\def\csname Suh-et-alCurrentUse\endcsname{unspecified}
-\expandafter\def\csname Suh-et-alLanguages\endcsname{Python}
-\expandafter\def\csname Suh-et-alCodeTypes\endcsname{unspecified}
-\expandafter\def\csname Suh-et-alCodeSize\endcsname{1\textsuperscript{st} percentile: 54 words,\newline 3\textsuperscript{rd} percentile: 83 words}
-\expandafter\def\csname Suh-et-alCodeContext\endcsname{competitive}
-\expandafter\def\csname Suh-et-alPrompts\endcsname{provided}
-\expandafter\def\csname Suh-et-alSources\endcsname{ Quescol \cite{quescol2023}, Kaggle \cite{wikipediaKaggle2023}}
-\expandafter\def\csname Suh-et-alCodeQuality\endcsname{filtered by human \textit{(not evaluated
-actual functionality of the code)}}
-\expandafter\def\csname Suh-et-alReliability\endcsname{Peer-review paper}
 
 
-\evaluationTable{Suh-et-al}
 
 
+\expandafter\def\csname SuhHumanCode\endcsname{3,700}
+\expandafter\def\csname SuhLLMCode\endcsname{29,500}
+\expandafter\def\csname SuhNumLLMs\endcsname{4 \textit{chatgpt, gpt-4, Gemini pro, stracider2-instruct 15B}}
+\expandafter\def\csname SuhLLMDiversity\endcsname{3 \textit{gpt, gemini, stracider}}
+\expandafter\def\csname SuhCurrentUse\endcsname{Average year: 2024}
+\expandafter\def\csname SuhLanguages\endcsname{java, C++, python}
+\expandafter\def\csname SuhCodeTypes\endcsname{unspecified}
+\expandafter\def\csname SuhCodeSize\endcsname{1\textsuperscript{st} percentile:  words,\newline 3\textsuperscript{rd} percentile:  words}
+\expandafter\def\csname SuhCodeContext\endcsname{Both}
+\expandafter\def\csname SuhPrompts\endcsname{not in the paper}
+\expandafter\def\csname SuhSources\endcsname{MBPP, humaneEval-x, Code Search Net}
+\expandafter\def\csname SuhCodeQuality\endcsname{Sintax quality}
+\expandafter\def\csname SuhReliability\endcsname{Peer-review paper}
+
+\evaluationTable{Suh}
+
+
+\textbf{Unfortunately, the data they used is no longer available 
+through the official portals, which, at the time of writing, 
+are no longer accessible. As a result, this dataset is 
+effectively unusable.}

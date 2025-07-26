@@ -1,4 +1,5 @@
 \subsection{Pan et al}
+\label{section:Pan et al}
 The main objective of this paper is to demonstrate, 
 beyond any doubt, that detection methods commonly used for 
 natural language are not reliable when applied to code. 
@@ -33,6 +34,7 @@ To achieve this, the authors construct a dedicated dataset.
         \item Replacement of both variable and function names;
         \item Addition of unnecessary code to the solution.
     \end{itemize}
+    \item The source problem is specified in the dataset.
 \end{itemize}
 
 
@@ -45,8 +47,13 @@ To achieve this, the authors construct a dedicated dataset.
     \href{{https://figshare.com/articles/dataset/Replication_Package/24298036?file=42649573}}{Replication Package}
     \item In the paper is not specified what gpt is used in order to generate code.
     \item Only competitive code.
-    \item The paper mention a \textit{"manual valiation to ensure the correctness of the dataset"}
-    but it is not specialized what this validation consists.
+\end{itemize}
+
+
+\subsubsection*{Code Quality}
+In order to preserve quality in the LLMs code source:
+\begin{itemize}
+    \item \textit{”manual valiation to ensure the correctness of the dataset”}
 \end{itemize}
 
 
@@ -66,8 +73,7 @@ To achieve this, the authors construct a dedicated dataset.
 \expandafter\def\csname Pan-et-alCodeContext\endcsname{competitive}
 \expandafter\def\csname Pan-et-alPrompts\endcsname{provided}
 \expandafter\def\csname Pan-et-alSources\endcsname{ Quescol \cite{quescol2023}, Kaggle \cite{wikipediaKaggle2023}}
-\expandafter\def\csname Pan-et-alCodeQuality\endcsname{filtered by human \textit{(not evaluated
-actual functionality of the code)}}
+\expandafter\def\csname Pan-et-alCodeQuality\endcsname{filtered by human}
 \expandafter\def\csname Pan-et-alReliability\endcsname{Peer-review paper}
 
 

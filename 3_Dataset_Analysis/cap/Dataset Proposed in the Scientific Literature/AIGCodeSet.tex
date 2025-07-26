@@ -1,4 +1,5 @@
 \subsection{AIGCodeSet}
+\label{section:AiGCodeSet}
 The main contribution of this paper is also the preparation 
 of a dataset for evaluating detection methods. Unlike other 
 works, this dataset includes both functional and non-functional 
@@ -51,8 +52,20 @@ both from a plain prompt and from existing code.
     \item GPT, probably the most widely LLM family 
     used among students, is not 
     included among the evaluated models.
-    \item The code samples were filtered only for obvious errors, 
-    but their outputs were not checked.
+\end{itemize}
+
+
+%%%%
+%%%%
+\subsubsection*{Code Quality}
+In order to preserve quality in the LLMs code source:
+\begin{itemize}
+    \item \textit{"failure to produce any output"}
+    \item \textit{"inclusion of code written in C-family languages instead of Python."}
+    \item \textit{"presence of meaningless characters, sentences, numbers, or dots."}
+    \item \textit{"we manually removed any explanations provided above or below the code.
+    "However, \textbf{comments embedded within the code blocks were retained}, provided they were 
+    appropriately marked as comment lines.""}
 \end{itemize}
 
 
@@ -72,8 +85,7 @@ both from a plain prompt and from existing code.
 \expandafter\def\csname AIGCodeSetCodeContext\endcsname{competitive}
 \expandafter\def\csname AIGCodeSetPrompts\endcsname{provided}
 \expandafter\def\csname AIGCodeSetSources\endcsname{CodeNet by IBM \cite{puri2021codenet}}
-\expandafter\def\csname AIGCodeSetCodeQuality\endcsname{filtered by human \textit{(not evaluated
-actual functionality of the code)}}
+\expandafter\def\csname AIGCodeSetCodeQuality\endcsname{Executable check}
 \expandafter\def\csname AIGCodeSetReliability\endcsname{Hight}
 
 
