@@ -58,12 +58,12 @@ both from a plain prompt and from existing code.
 %%%%
 %%%%
 \subsubsection*{Code Quality}
-In order to preserve quality in the LLMs code source:
+In order to preserve quality in the LLMs code source they manually removed:
 \begin{itemize}
-    \item \textit{"failure to produce any output"}
-    \item \textit{"inclusion of code written in C-family languages instead of Python."}
+    \item \textit{"code with failure to produce any output"}
+    \item \textit{"C-family languages instead of Python."}
     \item \textit{"presence of meaningless characters, sentences, numbers, or dots."}
-    \item \textit{"we manually removed any explanations provided above or below the code.
+    \item \textit{"Any explanations provided above or below the code.
     "However, \textbf{comments embedded within the code blocks were retained}, provided they were 
     appropriately marked as comment lines.""}
 \end{itemize}

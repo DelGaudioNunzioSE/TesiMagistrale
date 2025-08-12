@@ -37,7 +37,7 @@ fine-tuned detectors category significantly drop in a cross-domain context
 
 This is easily justified by the fact that fine-tuned methods perform 
 very well in in-distribution settings because they learn the 
-characteristics of the LLMs that generate the code—almost as if 
+characteristics of the LLMs that generate the code, almost as if 
 they learn the LLMs' coding style. Even though the performance of 
 fine-tuned models decreases when shifting domains, they still remain, 
 on average, more effective than methods in the other categories.
@@ -63,6 +63,37 @@ extremely low, with the notable exception of \textit{binoculars},
 which achieves results comparable to those of fine-tuned methods. 
 This offers hope for zero-shot methods to reach good performance 
 while maintaining potentially unlimited applicability across domains.
+
+Despite the advantages of Zero-Shot methods and the resilience shown 
+by \textit{Binoculars}, it is significant to note that classification 
+metrics drop sharply after the application of paraphrasing techniques. 
+As shown in Figure~\textit{B}, once variable and function names in the 
+LLM-generated code are modified, classification performance decreases 
+significantly.
+
+This represents a real-world issue, as modifying LLM-generated code by 
+simply renaming variables is both trivial and fast. In fact, this is a 
+problem that also affects text detectors, so much so that tools exist 
+which automatically modify generated text in such a way that natural 
+language detectors can no longer identify it as machine-generated.
+
+In contrast, \textit{Embedding-based detectors} and \textit{Pretrained 
+LLM with downstream detector} methods appear to be much less sensitive 
+to such transformations.
+
+CodeMirage thus seems to suggest that we should focus on methods that 
+leverage LLMs without fine-tuning, unless the target domain is 
+well-defined in advance.
+
+What is even more surprising is that the method which 
+appears to be the most effective and the most resilient to 
+both domain shifts and code paraphrasing is a method not 
+designed specifically for code: \textit{BiScope}. 
+
+For this reason, \textit{BiScope} will be considered the 
+baseline for all subsequent experiments involving detection 
+methods that were not included in the original evaluation 
+conducted by CodeMirage.
 
 
 \subsection{Test framework}
