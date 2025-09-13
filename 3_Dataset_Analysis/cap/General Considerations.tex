@@ -11,7 +11,16 @@ code works. Moreover, for our purposes
 (\hyperref[sec:Motivations Behind LLM-Generated Code Detection]{Section 1.2}), 
 whether a student or candidate submits non-functional 
 code, it makes little difference whether it was written by them or 
-by an LLM. Therefore, the consideration that every detection method 
+by an LLM. 
+
+Should we therefore be concerned about not having the guarantee that the LLM 
+codes present in the test datasets are correct? Is there a correlation between 
+incorrect and correct code in the detection of LLM code? According to some analysed 
+studies, the answer is yes: \textit{``The results demonstrate that detecting correct code is 
+more difficult than detecting incorrect code, both with our method and baselines.''}~ 
+\cite{ye2023uncovering}
+
+Therefore, the consideration that every detection method 
 should be evaluated specifically on \textbf{functional} LLM-generated code, 
 rather than on LLM code in general, proves useful in preventing a 
 significant gap between the reported metrics and the actual user 
@@ -20,22 +29,83 @@ classification bias due to the incorrect behaviour of the code.
 It is worth noting that while many works perform syntax or runtime 
 checks, none explicitly mention functional testing.
 
+
+\newpage
 \subsection{Test framework}
 \label{section:Test framework}
+Given the evaluations presented by the works I propose, 
+the detection methods, it was necessary to develop a framework that 
+could ensure the LLM code was certainly correct. The minimum result was 
+to obtain at least a subdataset that would allow evaluating whether there was a 
+difference between detection of functioning and non-functioning code.
 
-To evaluate the potential correlation between code correctness 
-(i.e., functional vs. non-functional code) and the detection of 
-LLM-generated code, a small framework was developed and published on
+So a small framework was developed and published on
 \href{https://github.com/DelGaudioNunzioSE/Code-LLMsTester.git}{GitHub}.
- This framework is designed 
-to assess the correctness of code submitted as a solution to a 
-known problem.
+This framework had important constraints: 
+\begin{itemize}
+    \item It had to work with Python (the most generated programming language)
+    \item It had to work on LLMs that could run on home hardware, 
+    \item It had to support as many LLMs as possible, 
+    \item It had to allow for the interruption and resumption 
+of test generation and the tests themselves at any time, 
+in order to evaluate error conditions and bugs.
+\end{itemize}
 
-Importantly, the LLM is explicitly instructed to generate 
-\textbf{challenging} test cases, in order to prevent it from producing 
-overly simplistic tests that the provided code could easily pass.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/framework/overview.pdf}
+    \caption{Framework overview}
+    \label{fig:framework overview}
+\end{figure}
 
-The reason for not asking the LLM to directly classify the code as 
+
+The framework was divided into several sections, so it could be easily modified for 
+potential future needs that required dataset generation by an LLM.
+
+\begin{enumerate}
+\item \textbf{Input:}The framework is capable of processing any dataset 
+that contains both LLM-generated code and human code that solve the same problem.
+
+\item \textbf{Input\textbackslash Data preparatin:} Any supported dataset is converted into a JSON file, 
+specifying which columns in the dataset correspond to \textit{"human code"} \textit{"LLM code"}, and 
+\textit{“problem explanation”} (the latter being optional and included only to 
+provide a more complete prompt to the LLM).
+
+\item \textbf{Framework\textbackslash Data Preparation:} A prompt template has 
+been prepared for an instruct-LLM. The prompt asks the LLM to understand both the LLM code and 
+the human code that solve the same problem, with potentially different input formats. 
+The model is asked to generate code that evaluates whether the two implementations return 
+the same output values given the same input values (even if provided in different formats).
+
+
+
+\item \textbf{Framework\textbackslash Test Preparation:} Since the LLMs used were "lightweight", 
+both before passing the code to the LLM and after obtaining the final .py file, small 
+adjustments are applied, such as: renaming classes and functions to ensure that the two 
+solutions have different function and class names, adding missing imports 
+(a common cause of test failures), and so on.
+
+\item \textbf{LLM\textbackslash Test Preparation:} The LLM generates 3 inputs and 3 control assets in Python.
+
+\item \textbf{Framework\textbackslash Test Running:} The framework therefore generates a folder 
+to insert the test code, executes it, and collects the results, saving the number of tests 
+passed for each code.
+
+\item \textbf{Output:} The test results are collected and added to the 
+metadata saved at the beginning of the process, with the aim of obtaining a 
+final dataset containing information about the test execution.
+
+
+
+\end{enumerate}
+
+
+
+
+%%%%%%
+\subsubsection{Development insights}
+Firstly, it is important to underline a fundamental consideration:
+the reason for not asking the LLM to directly classify the code as 
 correct or incorrect is supported by the findings of the paper 
 \textit{``Do LLMs generate test oracles that capture the actual or 
 the expected program behaviour''}~\cite{konstantinou2024llms}, which states: 
@@ -49,7 +119,6 @@ However, the project underwent huge changes, leaving very
 little of the original code (like the \textit{.jsonl} use).
 
 
-\subsubsection{Development}
 Initially, the idea was to slightly modify the \texttt{KodCode} 
 framework so as not to require a large language model (LLM) 
 to generate both code and tests, but only the tests. 
@@ -131,3 +200,13 @@ developing the framework, it was decided to maintain,
 at least in this phase, certain limitations—potentially 
 addressable in future work, such as compatibility with the 
 Python programming language only.
+
+%%%
+\subsubsection{Possible improvements}
+Despite the work done, there is still significant room for improvement:
+\begin{itemize}
+\item Predefined prompts depending on the LLMs
+\item Support for APIs for test generation
+\item Test execution within containers separate from the execution environment
+\item Improvement of library import techniques
+\end{itemize}

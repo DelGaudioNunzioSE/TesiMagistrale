@@ -29,3 +29,56 @@ to prevent unjust accusations.
     model catches when false alarms must be kept to a minimum.”
     \cite{guo2025codemirage}.
 \end{quote}
+
+
+Given these considerations, the most interesting metrics for evaluating 
+the difference between different detection methods are the 
+TPR (True Positive Rate) at a fixed FPR (False Positive Rate), 
+as well as the F1-Score, which allows for a general comparison 
+between multiple detection methods in cases where the FPR is not a 
+critical parameter for the method's application domain.
+
+Therefore, the following will be evaluated: F1-Score, TPR@FPR = 10\%, and TPR@FPR = 1\%.
+
+
+\section{Evaluation Methods}
+Analyzing various works that propose detection methods, several 
+"adversarial scenarios" have emerged, which can be considered more or less challenging:
+
+\begin{enumerate}
+\item \textbf{Out-of-domain:} All machine learning-based methods struggle significantly 
+when tested on datasets different from the training dataset. It is therefore 
+interesting to evaluate the performance loss between different datasets, considering:
+    \begin{enumerate}
+    \item \textbf{Type of code} present in the dataset \textit{(length, paradigm, language, etc)}
+    \item \textbf{LLMs} in the dataset different from the LLM used during training.
+    \end{enumerate}
+\item \textbf{Comment removal:} It would be extremely easy for a user to remove all 
+comments within the code. The reason is clear: comments are essentially 
+natural language, and it is likely that a detection method could exploit 
+comments to detect LLM-generated text.
+
+\item \textbf{Indentation removal:} Optional indentation could be another challenge, 
+as removing or modifying the indentation might confuse detection methods 
+that rely on structural features of the code.
+
+\item \textbf{Paraphrasing:} It would not be difficult for a user to change variable and 
+function names, perhaps calling them with more standard names. 
+Changing names becomes another realistic and difficult scenario for detection methods.
+\end{enumerate}
+
+The probable reason why the \textbf{Out-of-domain scenario} is so challenging 
+may be related to the following statement:
+\textit{"Every programmer develops a unique coding style, shaped by their 
+routines and habits. Similarly, generative models, like experienced 
+programmers, exhibit distinctive coding patterns influenced by the 
+biases present in their training data. Therefore, LLMs can be viewed 
+as programmers with consistent coding styles shaped by these inherent biases."}
+\cite{ye2023uncovering}
+Thus, it can be thought that the goal of a detection method for 
+LLM-generated code is simply to identify a specific coding style 
+(whether from a particular programmer or from an LLM). Fortunately, 
+we can hope that multiple LLMs share common traits, because:
+\textit{"Since LLMs are trained on vast corpora of data from the Internet, 
+their training data likely exhibit significant similarities, leading 
+to similar behaviors across models."}\cite{guo2024biscope}

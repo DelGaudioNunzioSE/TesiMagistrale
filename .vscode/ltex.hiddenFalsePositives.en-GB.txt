@@ -1,0 +1,1 @@
+{"rule":"LIBRARY","sentence":"^\\QAfter the conversion, a model requested by the user is set up via the Hugging Face library.\\E$"}
