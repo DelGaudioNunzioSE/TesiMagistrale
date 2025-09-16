@@ -105,4 +105,125 @@ adapting to out-of-domain tests. It also achieves positive
 TPR at an FPR of 10\%. Therefore, GPTSniffer with 
 CodeT5+ and BiScope will be considered the baselines 
 for subsequent models.
-\subsection{Test framework}
+
+
+
+
+\subsection{Methods to test}
+An extensive survey of LLM code-detection methods 
+in the literature was conducted. Many works were available 
+only as preprints. Several seemingly promising papers could 
+not be tested. For example, \cite{xu2025codevision} appears 
+to leverage CNNs to analyse images of LLM- and human-written 
+code for classification. Unfortunately, neither code nor 
+pretrained models were accessible. Consequently, only a small 
+set of other methods specifically designed for LLM code detection 
+was evaluated.
+
+In order to have a good comparison among the different methods, 
+the tests will also be performed on the two baseline methods 
+obtained from the CodeMirage work.
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{BiScope}
+Unlike methods that focus only on next-token prediction, 
+BISCOPE evaluates text along two axes: next-token prediction 
+and previous-token memorization.
+\begin{enumerate}
+    \item \textbf{Completion-prompt construction:} an LLM first summarizes the 
+    text to obtain global context. The original text is then split in two. 
+    The first part, the summary, and a completion request form the prompt fed 
+    to a surrogate LLM.
+    \item \textbf{Loss computation:} Using the prompt, the surrogate model processes 
+    the original text and computes two per-token cross-entropy losses:
+    \begin{enumerate}
+        \item \textit{Forward Cross-Entropy (FCE)}: how well the model predicts the next token.
+        \item \textit{Backward Cross-Entropy (BCE)}: how strongly the model’s logits memorize the immediately preceding token.
+    \end{enumerate}
+    \item \textbf{Feature extraction:} The text is divided into segments. 
+    For each segment, statistics of FCE and BCE are 
+    collected: mean, max, min, and standard deviation.
+
+    \item \textbf{Feature classification:} All statistics are concatenated into a 
+    single feature vector used to train a binary classifier that decides 
+    whether the text is human- or AI-written
+\end{enumerate}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/BiScope/Overview.png}
+    \caption{BiScope overview}
+    \label{fig:BiScope-overview}
+\end{figure}
+
+
+Analyzing the method, it is seen that many variables exist, such as: 
+which LLM to use for completion, into how many sections to split 
+the text, whether to give more or less importance to FCE and BCE. 
+All these variables were not specified in the CodeMirage paper. 
+For this reason, each hyperparameter was set to its default value.
+Regarding the choice of the LLM, the LLM most dissimilar from the 
+data present in the CodeMirage dataset and at the same time extremely 
+lightweight was selected: CodeLlama-7b-hf. The tests were then repeated 
+on the CodeMirage dataset by analyzing both original code (with comments) 
+and code from which every form of comment was removed.
+
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/BiScope/test normale.png}
+    \caption{BiScope test}
+    \label{fig:BiScope-default test}
+\end{figure}
+
+It is evident that the results are not consistent with those reported by 
+CodeMirage. Unfortunately, since the CodeMirage test code is not available, 
+it was not possible to assess the cause of the discrepancy. In any case, it 
+should be considered that a method specifically designed for natural text 
+detection can detect code with a TPR of 0.4 at an FPR of 1\%. 
+It is nevertheless better than standard zero-shot methods designed 
+for natural text.
+
+
+\subsubsection{GPTSniffer-CodeT5+}
+This method is based on another work, GPTSniffer\cite{nguyen2024gptsniffer}, 
+with the only difference 
+of using a different encoder-only model. This also shows how the same methods 
+can obtain extremely different results (see the TPR results at FPR = 1\% 
+reported by CodeMirage \ref{fig:BiScope-default test}) 
+without changing the methodological aspect but only by 
+changing the transformer used. This should not be surprising, since much of the 
+work is carried out by these networks, but it also shows how the results of the 
+same method can vary greatly when a different transformer is used.
+
+The GPTSniffer technique is based on two principles:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/gptsniffer/system components.png}
+    \caption{GPTSniffer system}
+    \label{fig:GPTSniffer system}
+\end{figure}
+\begin{enumerate}
+    \item Train the transformer and the classification head on code style, 
+    not on the code itself, via preprocessing.  
+    \begin{enumerate}
+        \item Removal of all imports
+        \item Removal of comments
+        \item Removal of formatting characters
+        \item Replacement of class name
+    \end{enumerate}
+    \item Fine-tune the encoder-only module to obtain the best embedding 
+    representation to be classified by the head.
+\end{enumerate}
+Although not specified in the CodeMirage work, care was 
+taken to develop a version of GPTSniffer preprocessing 
+functions that is general for all languages present in the dataset, 
+and not only Python \textit{(as GPTSniffer)}.
