@@ -120,10 +120,6 @@ pretrained models were accessible. Consequently, only a small
 set of other methods specifically designed for LLM code detection 
 was evaluated.
 
-In order to have a good comparison among the different methods, 
-the tests will also be performed on the two baseline methods 
-obtained from the CodeMirage work.
-
 
 
 
@@ -132,10 +128,18 @@ obtained from the CodeMirage work.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{BiScope}
+\subsubsection{BiScope-improved}
 Unlike methods that focus only on next-token prediction, 
 BISCOPE evaluates text along two axes: next-token prediction 
 and previous-token memorization.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/BiScope/Overview.png}
+    \caption{BiScope overview}
+    \label{fig:BiScope-overview}
+\end{figure}
+
 \begin{enumerate}
     \item \textbf{Completion-prompt construction:} an LLM first summarizes the 
     text to obtain global context. The original text is then split in two. 
@@ -156,49 +160,65 @@ and previous-token memorization.
     whether the text is human- or AI-written
 \end{enumerate}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth]{img/BiScope/Overview.png}
-    \caption{BiScope overview}
-    \label{fig:BiScope-overview}
-\end{figure}
 
 
-Analyzing the method, it is seen that many variables exist, such as: 
+
+Analysing the method, it is seen that many variables exist, such as: 
 which LLM to use for completion, into how many sections to split 
 the text, whether to give more or less importance to FCE and BCE. 
 All these variables were not specified in the CodeMirage paper. 
 For this reason, each hyperparameter was set to its default value.
-Regarding the choice of the LLM, the LLM most dissimilar from the 
-data present in the CodeMirage dataset and at the same time extremely 
-lightweight was selected: CodeLlama-7b-hf. The tests were then repeated 
-on the CodeMirage dataset by analyzing both original code (with comments) 
-and code from which every form of comment was removed.
+Regarding the \textbf{choice of the LLM}, a different initiative was taken. 
+By analysing the LLMs proposed by BISCOPE (and probably also used in the 
+CodeMirage tests) on which to evaluate the loss values, it was evident 
+that none of those LLMs had been fine-tuned on code:
 
+\begin{table}[ht]
+\centering
+\begin{tabular}{|p{0.5\textwidth}|p{0.5\textwidth}|}
+\hline
+\textbf{LLM proposed} & \textbf{Code finetuning?}  \\
+\hline
+\textbf{Llama-2-7B\cite{touvron2023llama},Llama-2-13B\cite{touvron2023llama}, Llama-3-8B\cite{dubey2024llama}} & No  \\
+\hline
+\textbf{Gemma-2B\cite{team2024gemma}, Gemma-7B\cite{team2024gemma}} & Code partly present in the training dataset \\
+\hline
+\textbf{Mistral-7B\cite{jiang2023mistral}} & Code partly present in the training dataset  \\
+\hline
+\end{tabular}
+\caption{Model Comparison and Training on Code}
+\label{tab:modelli_codice}
+\end{table}
 
+For this reason, a retraining of the classification head was 
+performed using \textbf{CodeLlama-7b-hf} \cite{roziere2023code} as the LLM.
+It was chosen as the LLM because: it is not among the LLMs that generated 
+code in the CodeMirage dataset; it has been fine-tuned on code in several 
+languages (Python, C++, Java, PHP, TypeScript, JavaScript, C\#); it has been 
+trained to respond to completion requests (required by BiScope); and it is an 
+instruct version, as expected by the BiScope framework.
 
+To evaluate the improvements introduced by changing the LLM, in-domain 
+tests were conducted on the CodeMirage dataset.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{img/BiScope/test normale.png}
-    \caption{BiScope test}
-    \label{fig:BiScope-default test}
+    \includegraphics[width=0.8\textwidth]{img/BiScope/test_noramle_migliorato.png}
+    \caption{BiScope test with CodeLlama-7b-hf}
+    \label{fig:BiScope-CodeLlama-7b-hf test}
 \end{figure}
 
-It is evident that the results are not consistent with those reported by 
-CodeMirage. Unfortunately, since the CodeMirage test code is not available, 
-it was not possible to assess the cause of the discrepancy. In any case, it 
-should be considered that a method specifically designed for natural text 
-detection can detect code with a TPR of 0.4 at an FPR of 1\%. 
-It is nevertheless better than standard zero-shot methods designed 
-for natural text.
+It is evident that the results are more than excellent. Inspecting the plot, 
+it appears that with an FPR of 10\% the model attains an almost perfect TPR. 
+It can also be noted that at FPR = 1\% the TPR decreases by a non-negligible 
+amount. This means that, under these conditions, the model is usable only by 
+accepting an error probability of about 10\% or slightly less.
 
-
-\subsubsection{GPTSniffer-CodeT5+}
+\subsubsection{GPTSniffer-CodeT5+ multilingual}
 This method is based on another work, GPTSniffer\cite{nguyen2024gptsniffer}, 
 with the only difference 
 of using a different encoder-only model. This also shows how the same methods 
 can obtain extremely different results (see the TPR results at FPR = 1\% 
-reported by CodeMirage \ref{fig:BiScope-default test}) 
+reported by CodeMirage \ref{fig:CodeMirage-tests}) 
 without changing the methodological aspect but only by 
 changing the transformer used. This should not be surprising, since much of the 
 work is carried out by these networks, but it also shows how the results of the 
@@ -213,7 +233,8 @@ The GPTSniffer technique is based on two principles:
 \end{figure}
 \begin{enumerate}
     \item Train the transformer and the classification head on code style, 
-    not on the code itself, via preprocessing.  
+    not on the code itself. 
+    They seek to obtain this result by applying heavy preprocessing that:   
     \begin{enumerate}
         \item Removal of all imports
         \item Removal of comments
@@ -223,7 +244,228 @@ The GPTSniffer technique is based on two principles:
     \item Fine-tune the encoder-only module to obtain the best embedding 
     representation to be classified by the head.
 \end{enumerate}
-Although not specified in the CodeMirage work, care was 
-taken to develop a version of GPTSniffer preprocessing 
-functions that is general for all languages present in the dataset, 
-and not only Python \textit{(as GPTSniffer)}.
+
+Unlike CodeMirage, to carry out these tests a \textbf{preprocessing 
+version applicable to many programming languages} (all those present in 
+the CodeMirage dataset) was developed. In fact, GPTSniffer focuses only on 
+Python, which would be a problem both during training and during testing on 
+a multilingual dataset.
+
+To evaluate the improvements introduced by changing the LLM, in-domain tests 
+were conducted on the CodeMirage dataset.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/CodeT5/default.png}
+    \caption{CodeT5 tests with multilingual preprocessing.}
+    \label{fig:CodeT5 tests with multilingual preprocessing}
+\end{figure}
+
+Excellent performance is observed here as well. Compared with BiScope 
+with CodeLlama, performance across languages remains much more variable 
+(higher standard deviation). Nevertheless, very good TPR is obtained at FPR = 1\%, 
+a result that is interesting and useful for scenarios where avoiding unjust 
+accusations is required.
+
+
+
+\subsubsection{UncoveringLLM}
+This method was one of the first proposed for detection specifically on code. 
+After recognizing that the problem on code was profoundly more complex than on 
+human code, a new technique was implemented. Unfortunately, it should be noted 
+that the provided repository was wholly insufficient. For this reason, the entire 
+technique they proposed was reproduced from scratch.
+The technique is based on a key observation: when an LLM rewrites code it previously 
+generated, the differences between the two versions are minimal. Conversely, if the 
+LLM rewrites code written by a human, the differences are much more significant. 
+Leveraging this intuition, the detector operates in three fundamental steps:
+
+\begin{enumerate}
+\item \textbf{Rewrite the code:} An LLM is used to rewrite the code snippet under analysis. 
+The model is instructed to explain the code’s functionality and rewrite it, a 
+method based on chain-of-thought prompting.
+
+\item \textbf{Measure similarity:} A code-similarity model, such as 
+GraphCodeBERT\cite{guo2020graphcodebert} 
+(trained with self-supervised contrastive learning), computes a similarity 
+score between the original code and its rewritten version. The framework is 
+flexible and not tied to a specific similarity model.
+
+\item \textbf{Compute the detection score:} The rewriting process is repeated multiple times 
+(m times), and the final similarity score is the mean of the scores from each 
+rewrite. If the score exceeds a threshold, the code is classified as LLM-generated. 
+According to experiments, only four rewrites are sufficient to achieve excellent results.
+\end{enumerate}
+
+The method, although interesting, presents a major problem in use: 
+at least two rewrites are required for each code snippet, greatly 
+lengthening both the training and inference phases. For this reason, 
+despite the work recommending 4 rewrites for higher performance, the tests 
+will use two rewrites, which according to the original paper’s tests does not 
+reduce the F1-score by more than 0.1.
+
+To use this method, the previously described framework~\ref{section:Test framework} 
+was therefore used (with slight modifications) to generate code rewrites on a 
+dataset. In this way it was possible to run tests on the various available datasets.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/UncoveringLLM/framework.jpg}
+    \caption{UncoveringLLM Framework}
+    \label{fig:UncoveringLLM Framework}
+\end{figure}
+
+
+
+
+\subsubsection{LLMPPL}
+The work “Detecting AI-Generated Code Assignments Using Perplexity 
+of Large Language Models” proposes a zero-shot detection method based 
+on perplexity. However, from their official repository on 
+\href{https://github.com/Arrtourz/llmppl}{GitHub}.
+
+Quickly repeating how the perplexity score is computed in their library:
+\begin{enumerate}
+    \item \textbf{Tokenization} \\
+    A text sequence is converted into token IDs:
+    \[
+        x_1, x_2, \dots, x_N.
+    \]
+
+    \item \textbf{Autoregressive prediction} \\
+    The model produces logits for each position $t$ given the prefix:
+    \[
+        Z_t = f_\theta(x_1, \dots, x_t), \quad Z_t \in R^V,
+    \]
+    where $V$ is the vocabulary size.
+
+    \item \textbf{Token probabilities} \\
+    Apply the softmax function to obtain probabilities:
+    \[
+        p_\theta(v \mid x_{\leq t}) = \frac{\exp(Z_t[v])}{\sum_{u=1}^V \exp(Z_t[u])}.
+    \]
+
+    \item \textbf{Shifted targets} \\
+    For causal language modeling, the target at step $t$ is the next token:
+    \[
+        y_t = x_{t+1}, \quad t = 1, \dots, N-1.
+    \]
+
+    \item \textbf{Negative log-likelihood per token} \\
+    \[
+        \mathrm{NLL}_t = - \log p_\theta(y_t \mid x_{\leq t}).
+    \]
+
+    \item \textbf{Average loss (cross-entropy in nats)} \\
+    \[
+        \mathrm{loss} = \frac{1}{N-1} \sum_{t=1}^{N-1} \mathrm{NLL}_t
+        = -\frac{1}{N-1} \sum_{t=1}^{N-1} \log p_\theta(x_{t+1} \mid x_{\leq t}).
+    \]
+
+    \item \textbf{Perplexity} \\
+    \[
+        \mathrm{PPL} = \exp(\mathrm{loss}).
+    \]
+\end{enumerate}
+
+In order to select the best perplexity threshold, 
+a CoDet-M4\ref{section:CoDet-M4} sub-dataset was used, and the threshold that 
+maximized AUROC was set.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{img/LLMPPL/AUC.png}
+    \caption{MAX AUROC used to select the threshold.}
+    \label{fig:AUROC used to select the threshold.}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{CodeMirage test}
+The first tests were conducted on CodeMirage with a very important 
+precaution. The non-zero-shot models were trained on a different dataset 
+(CoDet-M4\ref{section:CoDet-M4}, with clean code, i.e., code from which every 
+comment was removed). Moreover, in all analysed code, all comments were 
+removed across languages to ensure that no method relies on natural 
+language for detection.
+
+\subsubsection{BiScope-improved}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{img/BiScope/Codemirage.png}
+    \caption{BiScope-improved-CodeMirage test.}
+    \label{fig:BiScope-improved-CodeMirage test}
+\end{figure}
+
+\subsubsection{GPTSniffer-CodeT5+ multilingual}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{img/CodeT5/CodeMirage.png}
+    \caption{GPTSniffer-CodeT5+ multilingual-CodeMirage test.}
+    \label{fig:GPTSniffer-CodeT5+ multilingual-CodeMirage test}
+\end{figure}
+
+
+\subsubsection{UncoveringLLM}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{img/UncoveringLLM/CodeMirage.png}
+    \caption{UncoveringLLM-CodeMirage test.}
+    \label{fig:UncoveringLLM-CodeMirage test}
+\end{figure}
+
+
+
+\subsubsection{LLMPL}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{img/LLMPPL/CodeMirage.png}
+    \caption{LLMPPL/-CodeMirage test.}
+    \label{fig:LLMPPL-CodeMirage test}
+\end{figure}
+
+
+
+
+%%%%
+\subsection{AIGCode test}
+
+\subsubsection{BiScope-improved}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{img/BiScope/AIG.png}
+    \caption{BiScope-improved-CodeMirage test.}
+    \label{fig:BiScope-improved-CodeMirage test}
+\end{figure}
+
+\subsubsection{GPTSniffer-CodeT5+ multilingual}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{img/CodeT5/AIG.png}
+    \caption{GPTSniffer-CodeT5+ multilingual-CodeMirage test.}
+    \label{fig:GPTSniffer-CodeT5+ multilingual-CodeMirage test}
+\end{figure}
+
+
+\subsubsection{UncoveringLLM}
+
+
+
+
+\subsubsection{LLMPL}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{img/LLMPPL/AIG.png}
+    \caption{LLMPPL/-CodeMirage test.}
+    \label{fig:LLMPPL-CodeMirage test}
+\end{figure}
+

@@ -89,3 +89,23 @@ in real-world settings than indentation removal. For these reasons,
 the focus will be on the most important metrics 
 (F1-score, TPR@FPR = 10\%, and TPR@FPR = 1\%) 
 on in-domain, \textbf{out-of-domain}, and \textbf{comment-removal} tests.
+
+It is explained from now that all test plots will include these three selected metrics 
+(F1-score, TPR@FPR = 10\%, TPR@FPR = 1\%). In particular, the values of F1, TPR@FPR = 
+10\%, and TPR@FPR = 1\% averaged across languages will be reported. 
+At the same time, an error bar computed via the standard deviation on 
+the average values will be shown. Variation across programming languages, 
+not across LLMs, was chosen for reasons of informational utility. If the 
+joint variability across languages and generating LLMs were evaluated, the 
+source of uncertainty would be difficult to understand. Moreover, uncertainty 
+due to differences between LLMs is less significant (because more tied to training 
+data) than that due to the programming language. If variation across LLMs is of 
+interest, it is more useful to display the performance that the model obtains on a 
+specific LLM.
+
+This policy was not applied solely to the metrics reported by the 
+CodeMirage paper (figure \ref{fig:CodeMirage-tests}), which appear to have been evaluated both over LLM and over language.
+
+To allow anyone to run tests for any preferred LLM, 
+a graphical interface was created that allows easy testing 
+of the methods presented in this work. This part will be detailed in Section 6.
