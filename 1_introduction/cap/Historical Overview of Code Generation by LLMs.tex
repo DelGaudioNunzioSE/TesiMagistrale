@@ -24,11 +24,10 @@ the same way they would handle natural text generation
 by predicting sequences of tokens in context using learned 
 statistical patterns \cite{vaswani2017attention}.
 
-From this point of view we can start in the 1943 
-during World War II with
-the invention of Colossus, one of the first digital electronic computers, 
-developed in order to analyse encrypted
-communications from the German military.
+From this point of view, the starting point can be traced back to 1943, 
+during World War II, with the invention of Colossus, one of the first digital 
+electronic computers, developed to analyse encrypted communications from the 
+German military
 
 In parallel, the discipline of Natural Language Processing 
 (NLP) began to take shape as early as the 1940s, culminating 
@@ -128,10 +127,10 @@ paper \textit{Attention Is All You Need} in 2017, which
 introduced the Transformer architecture \cite{vaswani2017attention}
 and, enabled the widespread development of
 Large Language Models (LLMs). 
-We must remember that the first LLMs were typically designed to 
-analyse and generate just natural language text, so not all LLMs 
-were capable of generating code, or at least not of 
-generating syntactically correct or functional code.
+It should be noted that the first LLMs were typically designed 
+to analyse and generate only natural language text, so not all LLMs 
+were capable of generating code, or at least of generating syntactically 
+correct or functional code.
 
 In 2018, two foundational models were introduced: BERT 
 \cite{devlin2019bert}, an encoder-only architecture 
@@ -215,3 +214,13 @@ In 2024, Google introduced Gemini \cite{AlphaCode_2},
 which, when integrated into an inspired AlphaCode framework, 
 reached performance within the top 15\% of coding competition 
 participants.
+
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/1/image.png}
+    \caption{The code completion performance of competitive models on five benchmarks,
+Humaneval-FIM, SAFIM, CrossCodeEval, RepoEval, CrossCodeLongEval from \cite{hui2024qwen2}.}
+    \label{fig:LLM-coder-examples}
+\end{figure}

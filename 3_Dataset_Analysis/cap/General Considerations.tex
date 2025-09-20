@@ -13,12 +13,14 @@ whether a student or candidate submits non-functional
 code, it makes little difference whether it was written by them or 
 by an LLM. 
 
-Should we therefore be concerned about not having the guarantee that the LLM 
-codes present in the test datasets are correct? Is there a correlation between 
-incorrect and correct code in the detection of LLM code? According to some analysed 
-studies, the answer is yes: \textit{``The results demonstrate that detecting correct code is 
-more difficult than detecting incorrect code, both with our method and baselines.''}~ 
-\cite{ye2023uncovering}
+A relevant concern arises from the lack of guarantee 
+that the LLM-generated code present in the test datasets is 
+correct. Another important question is whether there is a 
+correlation between incorrect and correct code in the detection of 
+LLM code. According to some analysed studies, the answer is affirmative: 
+‘The results demonstrate that detecting correct code is more difficult 
+than detecting incorrect code, both with our method and 
+baselines.’~\cite{ye2023uncovering}
 
 Therefore, the consideration that every detection method 
 should be evaluated specifically on \textbf{functional} LLM-generated code, 
@@ -139,14 +141,13 @@ effective tests. In many cases, the tests produced
 were incorrect and would have incorrectly flagged 
 correct code as faulty.
 
-As a result, it became necessary to change the 
-approach: rather than relying solely on the LLM’s 
-test-generation capabilities, we opted to use 
-functioning reference code that solved the same problem. 
-Since the dataset proposed by Pan et al.\ includes both 
-LLM-generated code and corresponding human-written code 
-(the latter being reliably correct), we focused on that 
-dataset.
+As a result, it became necessary to change the approach: 
+rather than relying solely on the LLM’s test-generation 
+capabilities, functioning reference code that solved the 
+same problem was used. Since the dataset proposed by 
+Pan et al.\ includes both LLM-generated code and 
+corresponding human-written code (the latter being reliably correct), 
+the analysis concentrated on that dataset.
 
 The new strategy required generating inputs consistent 
 with both the problem statement and the function signatures. 
@@ -159,28 +160,25 @@ Several challenges emerged from this new approach, some
 of which are outlined below:
 
 \begin{enumerate}
-    \item \textbf{Lack of Imports}: Human-written code in 
-    the dataset did not include any imports. We therefore 
-    introduced a mechanism to automatically insert the most 
-    common imports, as the LLM proved ineffective at 
-    consistently adding all necessary ones.
+    \item \textbf{Lack of Imports}: Human-written code in the 
+    dataset did not include any imports. Therefore, a mechanism was 
+    introduced to automatically insert the most common imports, as the 
+    LLM proved ineffective at consistently adding all necessary ones.
     
     \item \textbf{Code Structure Variability}: Not all 
     solutions were simple functions—some were classes, 
-    and others were standalone Python scripts. For 
-    class-based solutions, the prompts were adapted to 
-    enable the LLM to instantiate objects correctly and 
-    generate the necessary tests. For script-based code, 
-    we chose to discard such examples, as converting 
-    them into testable functions could have introduced 
-    errors attributable to the LLM's transformation 
-    process rather than to the code itself.
+    and others were standalone Python scripts. For class-based 
+    solutions, the prompts were adapted to enable the LLM to 
+    instantiate objects correctly and generate the necessary tests. 
+    For script-based code, such examples were discarded, 
+    since converting them into testable functions might have 
+    introduced errors attributable to the transformation process 
+    rather than to the code itself.
     
     \item \textbf{Name Collisions}: In many cases, 
-    the human-written and LLM-generated code used 
-    identical class or function names. To address this, 
-    we implemented an algorithmic renaming strategy to 
-    avoid such conflicts.
+    the human-written and LLM-generated code used identical 
+    class or function names. To address this, an algorithmic 
+    renaming strategy was implemented to avoid such conflicts.
 \end{enumerate}
 
 Subsequently, it became necessary to develop an 

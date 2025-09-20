@@ -1,8 +1,9 @@
 \section{Evaluation of Existing Methods}
 \subsection{Baseline Considerations}
-We recall that the work of CodeMirage\cite{guo2025codemirage} was 
-not only to provide a dataset, but also to perform 
-tests on some of the methods present in the literature.
+It should be recalled that the work of 
+CodeMirage\cite{guo2025codemirage} was not only to 
+provide a dataset, but also to perform tests on 
+some of the methods present in the literature.
 
 The methods tested by CodeMirage can be divided into 4 categories:
 \begin{enumerate}
@@ -43,7 +44,7 @@ The methods tested by CodeMirage can be divided into 4 categories:
     LLM code.
 \end{enumerate}
 
-\subsubsection{First results}
+\subsubsection{CodeMirage problems}
 
 \begin{figure}[H]
     \centering
@@ -105,6 +106,18 @@ adapting to out-of-domain tests. It also achieves positive
 TPR at an FPR of 10\%. Therefore, GPTSniffer with 
 CodeT5+ and BiScope will be considered the baselines 
 for subsequent models.
+
+It must be noted that CodeMirage has a major issue. In their work, 
+it is never specified that the codes on which the methods are tested 
+operate on clean code. By clean code it is meant code in which the 
+natural-language sections (comments) have not been removed. 
+This is actually fundamental for testing because it shows that the 
+detection method does not rely on natural text but on code. In fact, 
+by analyzing the CodeMirage results with and without comment removal, 
+the results are extremely different (see the following sections). 
+A very strong and perhaps obvious statement can therefore be made: 
+\textbf{any test on any dataset to which at least comment removal has not been 
+applied is not to be considered valid for LLM code detection}.
 
 
 
@@ -202,9 +215,21 @@ To evaluate the improvements introduced by changing the LLM, in-domain
 tests were conducted on the CodeMirage dataset.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{img/BiScope/test_noramle_migliorato.png}
-    \caption{BiScope test with CodeLlama-7b-hf}
-    \label{fig:BiScope-CodeLlama-7b-hf test}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/BiScope/standard/CodemirageOverCodemirage.png}
+        \caption{BiScope standard.}
+        \label{fig:BiScope standard.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/BiScope/test_noramle_migliorato.png}
+        \caption{BiScope CodeLlama-7b-hf.}
+        \label{fig:BiScope CodeLlama-7b-hf.}
+    \end{subfigure}
+    \caption{improvements BiScope.}
+    \label{fig:BiScope_improvements.}
 \end{figure}
 
 It is evident that the results are more than excellent. Inspecting the plot, 
@@ -325,60 +350,65 @@ on perplexity. However, from their official repository on
 Quickly repeating how the perplexity score is computed in their library:
 \begin{enumerate}
     \item \textbf{Tokenization} \\
-    A text sequence is converted into token IDs:
+    A text sequence is converted into token IDs, where $s$ is the text:
     \[
-        x_1, x_2, \dots, x_N.
+        T(s) = (x_1, \dots x_L), \quad  x_i \in V = {1, \dots, n}
     \]
 
     \item \textbf{Autoregressive prediction} \\
-    The model produces logits for each position $t$ given the prefix:
+    The model produces logits for each position $i$ given the prefix, 
+    where $|V|$ is the vocabulary size and $f_M$ is the LLM:
     \[
-        Z_t = f_\theta(x_1, \dots, x_t), \quad Z_t \in R^V,
+        Z_i = f_M(x_{0:i-1}), \quad Z_i \in \mathbb{R}^{|V|}
     \]
-    where $V$ is the vocabulary size.
 
     \item \textbf{Token probabilities} \\
     Apply the softmax function to obtain probabilities:
     \[
-        p_\theta(v \mid x_{\leq t}) = \frac{\exp(Z_t[v])}{\sum_{u=1}^V \exp(Z_t[u])}.
+        Y_i=\mathrm{softmax}(Z_i), \quad
+        Y_{ij}=P(v_j \mid x_{0:i-1})=\frac{\exp(Z_{ij})}{\sum_{u\in V}\exp(Z_{iu})}.
     \]
 
     \item \textbf{Shifted targets} \\
-    For causal language modeling, the target at step $t$ is the next token:
+    For causal LM, the target at step $i$ is the next token in the sequence:
     \[
-        y_t = x_{t+1}, \quad t = 1, \dots, N-1.
+        \text{target at } i \text{ is } x_i \text{ given } x_{0:i-1}, \quad i=1,\dots,L.
     \]
 
     \item \textbf{Negative log-likelihood per token} \\
     \[
-        \mathrm{NLL}_t = - \log p_\theta(y_t \mid x_{\leq t}).
+        \mathrm{NLL}_i = -\log Y_{i\,x_i}.
     \]
 
     \item \textbf{Average loss (cross-entropy in nats)} \\
     \[
-        \mathrm{loss} = \frac{1}{N-1} \sum_{t=1}^{N-1} \mathrm{NLL}_t
-        = -\frac{1}{N-1} \sum_{t=1}^{N-1} \log p_\theta(x_{t+1} \mid x_{\leq t}).
+        \mathrm{loss}=\frac{1}{L}\sum_{i=1}^{L}\mathrm{NLL}_i
+        =-\frac{1}{L}\sum_{i=1}^{L}\log Y_{i\,x_i}
+        =\log\mathrm{PPL}_M(s).
     \]
 
     \item \textbf{Perplexity} \\
+    So more the perplexity is low, more the text is likely to be generated by an LLM:
     \[
-        \mathrm{PPL} = \exp(\mathrm{loss}).
+        \mathrm{PPL}_M(s)=\exp(\mathrm{loss}).
     \]
 \end{enumerate}
 
 In order to select the best perplexity threshold, 
 a CoDet-M4\ref{section:CoDet-M4} sub-dataset was used, and the threshold that 
-maximized AUROC was set.
+maximized TPR/FPR was set.
 
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{img/LLMPPL/AUC.png}
-    \caption{MAX AUROC used to select the threshold.}
-    \label{fig:AUROC used to select the threshold.}
+    \caption{MAX TPR/FPR used to select the threshold.}
+    \label{fig:TPR/FPR used to select the threshold.}
 \end{figure}
 
 
+
+\subsubsection{Binoculars}
 
 
 
@@ -398,13 +428,7 @@ comment was removed). Moreover, in all analysed code, all comments were
 removed across languages to ensure that no method relies on natural 
 language for detection.
 
-\subsubsection{BiScope-improved}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{img/BiScope/Codemirage.png}
-    \caption{BiScope-improved-CodeMirage test.}
-    \label{fig:BiScope-improved-CodeMirage test}
-\end{figure}
+
 
 \subsubsection{GPTSniffer-CodeT5+ multilingual}
 \begin{figure}[H]
