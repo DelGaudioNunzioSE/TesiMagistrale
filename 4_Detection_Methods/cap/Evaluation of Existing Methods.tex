@@ -112,9 +112,10 @@ it is never specified that the codes on which the methods are tested
 operate on clean code. By clean code it is meant code in which the 
 natural-language sections (comments) have not been removed. 
 This is actually fundamental for testing because it shows that the 
-detection method does not rely on natural text but on code. In fact, 
-by analyzing the CodeMirage results with and without comment removal, 
-the results are extremely different (see the following sections). 
+detection method does not rely on natural text but on code.
+Moreover, the approach would become even less dataset-independent, 
+since performance would risk varying extremely depending on the size 
+of a code’s comment section.
 A very strong and perhaps obvious statement can therefore be made: 
 \textbf{any test on any dataset to which at least comment removal has not been 
 applied is not to be considered valid for LLM code detection}.
@@ -122,6 +123,7 @@ applied is not to be considered valid for LLM code detection}.
 
 
 
+\clearpage
 \subsection{Methods to test}
 An extensive survey of LLM code-detection methods 
 in the literature was conducted. Many works were available 
@@ -141,7 +143,18 @@ was evaluated.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{BiScope-improved}
+\subsubsection{BiScope}
+BiScope is a method designed for natural-text detection 
+but was also tested by its authors on code detection.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/BiScope/codetest.png}
+    \caption{BiScope official code result}
+    \label{fig:BiScope official code result}
+\end{figure}
+
+
 Unlike methods that focus only on next-token prediction, 
 BISCOPE evaluates text along two axes: next-token prediction 
 and previous-token memorization.
@@ -155,34 +168,72 @@ and previous-token memorization.
 
 \begin{enumerate}
     \item \textbf{Completion-prompt construction:} an LLM first summarizes the 
-    text to obtain global context. The original text is then split in two. 
-    The first part, the summary, and a completion request form the prompt fed 
-    to a surrogate LLM.
+    text to obtain global context. The original text is then split in two (prefix and suffix). 
+    A completion request with the summary of the text and the first part (prefix).
     \item \textbf{Loss computation:} Using the prompt, the surrogate model processes 
-    the original text and computes two per-token cross-entropy losses:
+    the suffix text and computes two per-token cross-entropy losses:
+
     \begin{enumerate}
-        \item \textit{Forward Cross-Entropy (FCE)}: how well the model predicts the next token.
-        \item \textit{Backward Cross-Entropy (BCE)}: how strongly the model’s logits memorize the immediately preceding token.
+        \item \textit{Forward Cross-Entropy (FCE)}:
+        the cross-entropy loss between the ground truth (suffix) next token and the LLM next token prediction given the previous tokens.
+        \[
+        \mathrm{FCE}_i \;=\; - \sum_{z=1}^{\lVert V \rVert} \,\tilde{P}^{\,z}_{\,i+1}\,\log\!\big(P^{\,z}_{\,i}\big),
+        \]
+
+        \item \textit{Backward Cross-Entropy (BCE)}: 
+        the cross-entropy loss between the ground truth (suffix) last token and the LLM next token prediction given the previous tokens (last ground truth token included).
+        \[
+        \mathrm{BCE}_i \;=\; - \sum_{z=1}^{\lVert V \rVert} \tilde{P}^{\,z}_{\,i}\,\log\!\big(P^{\,z}_{\,i}\big).
+        \]
     \end{enumerate}
+    \begin{itemize}
+        \item $V$: as vocabulary; $\lVert V\rVert$ is its size.
+        \item $i$: as current position in the \emph{suffix} given the prompt+prefix (FCE valid only if $i{+}1$ exists).
+        \item $z$: as index over vocabulary items $1,\dots,\lVert V\rVert$.
+        \item $P^{z}_{i}$: as softmax probability assigned by the LLM at position $i$ to token $z$ given all preceding tokens up to $i$.
+        \item $\tilde{P}^{z}_{i}$: as one-hot encoding of the ground-truth token at position $i$ ($\tilde{P}^{z^\star}_{i}{=}1$ if $z{=}z^\star$, else $0$).
+    \end{itemize}
     \item \textbf{Feature extraction:} The text is divided into segments. 
     For each segment, statistics of FCE and BCE are 
     collected: mean, max, min, and standard deviation.
 
     \item \textbf{Feature classification:} All statistics are concatenated into a 
     single feature vector used to train a binary classifier that decides 
-    whether the text is human- or AI-written
+    whether the text is human- or AI-written \textit{(implemented with a Random Forest)}.
 \end{enumerate}
-
-
-
 
 Analysing the method, it is seen that many variables exist, such as: 
 which LLM to use for completion, into how many sections to split 
 the text, whether to give more or less importance to FCE and BCE. 
 All these variables were not specified in the CodeMirage paper. 
 For this reason, each hyperparameter was set to its default value.
-Regarding the \textbf{choice of the LLM}, a different initiative was taken. 
-By analysing the LLMs proposed by BISCOPE (and probably also used in the 
+
+\subsubsection{BiScope-improved}
+This method is proposed for the first time in this thesis and attempts to modify BiScope specifically for code.
+The big changes are: erase the phase of summarizing the code and the LLM used
+in FCE and BCE computation.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/BiScope/overview improved.jpg}
+    \caption{BiScope overview improved}
+    \label{fig:BiScope-overview-improved}
+\end{figure}
+
+The \textbf{phase of summarizing} is real useful for natural text, like chose
+a title for the text (another type of prompt recommended by the authors).
+The problem is that more or less every LLM can generate a good summary of
+natural text, but non every LLM-code-finetuned can generate a good summary 
+(or explanation) of code.
+For this reason in the BiScope-improved version the summarization 
+phase was removed, and we can demonstrate that it is not necessary for
+achieve good results.
+Erasing the summarization phase also has the advantage of speeding up
+the inference phase, which is already quite slow due to the need to
+perform double cross-entropy computation (BCE and FCE).
+
+Regarding the \textbf{choice of the LLM}, 
+by analysing the LLMs proposed by BISCOPE (and probably also used in the 
 CodeMirage tests) on which to evaluate the loss values, it was evident 
 that none of those LLMs had been fine-tuned on code:
 
@@ -228,8 +279,8 @@ tests were conducted on the CodeMirage dataset.
         \caption{BiScope CodeLlama-7b-hf.}
         \label{fig:BiScope CodeLlama-7b-hf.}
     \end{subfigure}
-    \caption{improvements BiScope.}
-    \label{fig:BiScope_improvements.}
+    \caption{BiScope and BiScope improved CodeMirage in-domain test.}
+    \label{fig:BiScope and BiScope improved CodeMirage in-domain test.}
 \end{figure}
 
 It is evident that the results are more than excellent. Inspecting the plot, 
@@ -281,7 +332,7 @@ were conducted on the CodeMirage dataset.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{img/CodeT5/default.png}
-    \caption{CodeT5 tests with multilingual preprocessing.}
+    \caption{CodeT5 tests with multilingual preprocessing CodeMirage in-domain test.}
     \label{fig:CodeT5 tests with multilingual preprocessing}
 \end{figure}
 
@@ -345,9 +396,20 @@ dataset. In this way it was possible to run tests on the various available datas
 The work “Detecting AI-Generated Code Assignments Using Perplexity 
 of Large Language Models” proposes a zero-shot detection method based 
 on perplexity. However, from their official repository on 
-\href{https://github.com/Arrtourz/llmppl}{GitHub}.
+\href{https://github.com/Arrtourz/llmppl}{GitHub} 
+it can be seen that only the code for computing perplexity was released, 
+and not the code for all the subsequent evaluations described in their 
+work. Nevertheless, it is appropriate to test what was implemented. 
+In this work, perplexity is computed using different techniques, 
+including the use of a \textbf{Mamba model}. 
+In particular, they implemented the calculation of 
+perplexity with \href{https://huggingface.co/state-spaces/mamba-130m-hf}{mamba-130m-hf}
+The use of Mamba for perplexity 
+calculation is very interesting, since it is known that Mamba models 
+tend to be much more efficient than transformers 
+(linear-time computation rather than exponential).
 
-Quickly repeating how the perplexity score is computed in their library:
+Quickly repeating how the perplexity score is computed in general:
 \begin{enumerate}
     \item \textbf{Tokenization} \\
     A text sequence is converted into token IDs, where $s$ is the text:
@@ -357,7 +419,8 @@ Quickly repeating how the perplexity score is computed in their library:
 
     \item \textbf{Autoregressive prediction} \\
     The model produces logits for each position $i$ given the prefix, 
-    where $|V|$ is the vocabulary size and $f_M$ is the LLM:
+    where $|V|$ is the vocabulary size and $f_M$ is the 
+    LLM \textit{(or in this case the mamba model)}:
     \[
         Z_i = f_M(x_{0:i-1}), \quad Z_i \in \mathbb{R}^{|V|}
     \]
@@ -409,8 +472,58 @@ maximized TPR/FPR was set.
 
 
 \subsubsection{Binoculars}
+\newcommand{\PPL}{\mathrm{PPL}}
+\newcommand{\xPPL}{\mathrm{xPPL}}
+Classical detection methods rely mainly on PPL calculation. 
+Binoculars takes a step further, pointing out that a text may 
+have low PPL even if generated by an LLM with a particular prompt. 
+It is well known that there is an entire field called prompt 
+engineering that focuses precisely on obtaining certain results 
+from an LLM by simply changing the prompt. Since the prompt is so 
+fundamental during generation, it cannot be ignored in PPL calculation. 
+However, it is obviously not possible to recover the prompt given only 
+the generated text (in this case, the code). For this reason, 
+Binoculars proposes evaluating the value 
+B, given by the ratio between the PPL computed by a first LLM and the PPL of a second LLM on the predictions of the first LLM.
 
+PPL over first LLM:
+\[
+\log \PPL_{M_1}(s)
+= -\frac{1}{L}\sum_{i=1}^{L}\log p_{M_1}(x_i\mid x_{<i}).
+\]
 
+PPL over second LLM of the predictions of the first LLM:
+\[
+\log \xPPL_{M_1,M_2}(s)
+= -\frac{1}{L}\sum_{i=1}^{L}\sum_{v\in V}
+p_{M_2}(v\mid x_{<i})\,\log p_{M_1}(v\mid x_{<i}).
+\]
+
+Ratio:
+\[
+B_{M_1,M_2}(s)=\frac{\log \PPL_{M_1}(s)}{\log \xPPL_{M_1,M_2}(s)}.
+\]
+
+Deduction:
+\begin{itemize}
+\item LLM-like text: $\PPL_{M_1}(s)\approx \xPPL_{M_1,M_2}(s)\ \Rightarrow\ B$ small.
+\item Human-like text: $\PPL_{M_1}(s)\gg \xPPL_{M_1,M_2}(s)\ \Rightarrow\ B$ large.
+\item Assumption needed: $M_1$ and $M_2$ are similar (same tokenizer and comparable strength).
+\end{itemize}
+The calculation of PPL by the second LLM on the predictions of 
+the first is intended to “normalize” the perplexity value due to 
+the particularity of the generated text (in this case code) and thus 
+the particularity of the prompt. It is easy to see that this issue 
+is more evident in natural-language texts; nevertheless, this 
+method was also tested using LLMs fine-tuned on code, in particular 
+\href{https://huggingface.co/meta-llama/CodeLlama-7b-hf}
+{meta-llama/CodeLlama-7b-hf} as the first LLM and 
+\href{https://huggingface.co/meta-llama/CodeLlama-7b-Instruct-hf}{CodeLlama-7b-Instruct-hf} 
+\cite{roziere2023code} as the second LLM.
+Tests were also conducted with the LLMs used in the original work:
+\href{https://huggingface.co/tiiuae/falcon-7b}{falcon-7b} and 
+\href{https://huggingface.co/tiiuae/falcon-7b-instruct}{falcon-7b-instruct}
+\cite{falcon40b}
 
 
 
@@ -428,73 +541,61 @@ comment was removed). Moreover, in all analysed code, all comments were
 removed across languages to ensure that no method relies on natural 
 language for detection.
 
+\subsubsection{BiScope-improved}
 
-
-\subsubsection{GPTSniffer-CodeT5+ multilingual}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{img/CodeT5/CodeMirage.png}
-    \caption{GPTSniffer-CodeT5+ multilingual-CodeMirage test.}
-    \label{fig:GPTSniffer-CodeT5+ multilingual-CodeMirage test}
+    \includegraphics[width=0.6\textwidth]{img/TEST/BiScope/fromCodetCodemirange/test_noramle_migliorato-Recuperato.png}
+    \caption{BiScope. Learning:Codet Test:Codemirange}
+    \label{fig:BiScope1}
 \end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{img/TEST/BiScope/fromCodetCodemirange/accuracy LLM (2).png}
+    \caption{BiScope. Learning:Codet Test:Codemirange Accuracy over LLMs}
+    \label{fig:BiScope1accLLM}
+\end{figure}
+
+\subsubsection{GPTSniffer-CodeT5+ multilingual}
+
 
 
 \subsubsection{UncoveringLLM}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{img/UncoveringLLM/CodeMirage.png}
-    \caption{UncoveringLLM-CodeMirage test.}
-    \label{fig:UncoveringLLM-CodeMirage test}
-\end{figure}
+
 
 
 
 \subsubsection{LLMPL}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{img/LLMPPL/CodeMirage.png}
-    \caption{LLMPPL/-CodeMirage test.}
-    \label{fig:LLMPPL-CodeMirage test}
-\end{figure}
 
+
+
+
+
+\subsubsection{Binoculars}
 
 
 
 %%%%
 \subsection{AIGCode test}
 
+
+\subsubsection{BiScope}
+
 \subsubsection{BiScope-improved}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{img/BiScope/AIG.png}
-    \caption{BiScope-improved-CodeMirage test.}
-    \label{fig:BiScope-improved-AIGCode test}
-\end{figure}
+
 
 \subsubsection{GPTSniffer-CodeT5+ multilingual}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{img/CodeT5/AIG.png}
-    \caption{GPTSniffer-CodeT5+ multilingual-CodeMirage test.}
-    \label{fig:GPTSniffer-CodeT5+ multilingual-AIGCode test}
-\end{figure}
+
 
 
 \subsubsection{UncoveringLLM}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{img/UncoveringLLM/AIG.png}
-    \caption{UncoveringLLM-CodeMirage test.}
-    \label{fig:UncoveringLLM-AIGCode test}
-\end{figure}
+
 
 
 
 \subsubsection{LLMPL}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth]{img/LLMPPL/AIG.png}
-    \caption{LLMPPL/-CodeMirage test.}
-    \label{fig:LLMPPL-AIGCode test}
-\end{figure}
 
+
+
+\subsubsection{Binoculars}
