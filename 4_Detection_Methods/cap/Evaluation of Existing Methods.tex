@@ -651,7 +651,7 @@ including those not seen during training.
 
 The performance across the two datasets appears essentially the same and not 
 satisfactory. Given that the detection method is extremely costly 
-(since it requires regenerating the code multiple times), it was not possible 
+\textit{(since it requires regenerating the code multiple times)}, it was not possible 
 to evaluate it with training on more datasets. In any case, TPR results at 
 FPR = 10\% that are so low, considering also the resource expenditure 
 required to perform code regeneration, make this method of limited 
@@ -693,8 +693,31 @@ Alternatively, it may indicate that in the CodeMirage dataset the
 difficulty of detection across codes is unbalanced with respect to 
 the generating LLMs, due to other factors such as the use of different 
 prompts during generation.
-\subsubsection{LLMPL}
 
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{LLMPL}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/TEST/LLMPPL/codemirage.png}
+        \caption{Test Codemirage.}
+        \label{fig:10}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/LLMPPL/test_noramle.png}
+        \caption{Test Codet.}
+        \label{fig:11}
+    \end{subfigure}
+    \caption{LLMPL out-domain test.}
+    \label{fig:444}
+\end{figure}
 
 
 
