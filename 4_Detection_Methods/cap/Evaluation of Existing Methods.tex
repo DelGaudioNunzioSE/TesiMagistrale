@@ -464,7 +464,7 @@ Quickly repeating how the perplexity score is computed in general:
 \end{enumerate}
 
 In order to select the best perplexity threshold, 
-a CoDet-M4\ref{section:CoDet-M4} sub-dataset was used, and the threshold that 
+a CoDet-M4 \ref{section:CoDet-M4} sub-dataset was used, and the threshold that 
 maximized TPR/FPR was set.
 
 
@@ -572,27 +572,127 @@ generation through transformers.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{img/TEST/BiScope/fromCodetCodemirange/test_noramle_migliorato-Recuperato.png}
-    \caption{BiScope. Learning:Codet Test:Codemirange}
-    \label{fig:BiScope1}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/TEST/BiScope/fromCodetCodemirange/test_noramle_migliorato-Recuperato.png}
+        \caption{Learning Codet and Test Codemirage.}
+        \label{fig:1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/TEST/BiScope/fromCodemirageoverCodet/test_noramle_migliorato-Recuperato.png}
+        \caption{Learning Codemirage and Test Codet.}
+        \label{fig:c2}
+    \end{subfigure}
+    \caption{BiScope improved out-domain test.}
+    \label{fig:111}
+\end{figure}
+It is evident that the performance of BiScope depends heavily on the 
+training and test dataset, despite the fact that the only trained 
+network is a simple Random Forest on the statistics of the forward 
+and backward loss.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/TEST/BiScope/fromCodetCodemirange/accuracy LLM (2).png}
+    \caption{Learning Codet and Test Codemirage LLM accuracy at FPR=10\%}
+    \label{fig:3}
+\end{figure}
+
+It is observed that the lowest accuracy is obtained from the o-mini3 model. 
+Moreover, the lowest accuracy scores come from LLMs not present in the 
+training dataset. It can therefore be stated with some degree of certainty 
+that the forward and backward statistics used by the method are closely 
+dependent on the generating LLMs, but also extremely effective during 
+inference (as show the results \ref{fig:c2}).
+
+\subsubsection{GPTSniffer-CodeT5+ multilingual}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/TEST/CodeT5/CodetCodemirage/2ef26c58d4f174c215355c24b3d4e7d4bc89fe05e63f3fa600285073.png}
+        \caption{Learning Codet and Test Codemirage.}
+        \label{fig:4}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/TEST/CodeT5/CodemirageCodet/76676bd3977b817dc4335cf6a3db269d0438797cb232b85369aa3543.png}
+        \caption{Learning Codemirage and Test Codet.}
+        \label{fig:5}
+    \end{subfigure}
+    \caption{GPTSniffer-CodeT5+ multilingual out-domain test.}
+    \label{fig:222}
+\end{figure}
+Exactly the opposite of BiScope, GPTSniffer seems to achieve slightly 
+better results when trained with CoDet. It is reasonable to assume that 
+this is due to the nature of GPTSniffer’s learning. During the training 
+of this detection method, the entire transformer encoder-only is fine-tuned. 
+A model of such size (compared to a Random Forest) benefits much more 
+from a large dataset. However, it should be noted that the results 
+obtained with training on CoDet show extremely high variability, 
+which may be attributable to the dataset quality across different 
+programming languages.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/TEST/CodeT5/CodetCodemirage/visualization(4).png}
+    \caption{Learning Codet and Test Codemirage LLM accuracy at FPR=10\%}
+    \label{fig:6}
+\end{figure}
+
+As show by the accuracy results over different LLM, 
+it can also be argued that CodeT5’s strong code-analysis capability 
+is sufficient for the method to learn features generalizable to multiple LLMs, 
+including those not seen during training.
+\subsubsection{UncoveringLLM}
+
+The performance across the two datasets appears essentially the same and not 
+satisfactory. Given that the detection method is extremely costly 
+(since it requires regenerating the code multiple times), it was not possible 
+to evaluate it with training on more datasets. In any case, TPR results at 
+FPR = 10\% that are so low, considering also the resource expenditure 
+required to perform code regeneration, make this method of limited 
+interest, even if it is extremely robust across datasets.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/TEST/UncovernngLLM/Clearcode/ccffd05754577a21cc6a59268a66bfd331e7843ede30c92a0f3a8403.png}
+        \caption{Test Codemirage.}
+        \label{fig:7}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/tests/UncoveringLLM/teststandard.png}
+        \caption{Test Codet.}
+        \label{fig:8}
+    \end{subfigure}
+    \caption{UncoveringLLM out-domain test.}
+    \label{fig:333}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{img/TEST/BiScope/fromCodetCodemirange/accuracy LLM (2).png}
-    \caption{BiScope. Learning:Codet Test:Codemirange Accuracy over LLMs}
-    \label{fig:BiScope1accLLM}
+    \includegraphics[width=0.8\textwidth]{img/TEST/UncovernngLLM/Clearcode/visualization(10).png}
+    \caption{Test Codemirage LLM accuracy at FPR=10\%}
+    \label{fig:9}
 \end{figure}
 
-\subsubsection{GPTSniffer-CodeT5+ multilingual}
-
-
-
-\subsubsection{UncoveringLLM}
-
-
-
-
+It is interesting to note that the LLMs with the highest accuracy values 
+seem to correspond to those obtained with BiScope, which, it should be 
+recalled, was trained on a different dataset and uses a completely 
+different detection method. This result is not sufficient to state it 
+with certainty, but it is reasonable to consider the possibility that 
+some LLMs are generally more difficult to detect than others. 
+Alternatively, it may indicate that in the CodeMirage dataset the 
+difficulty of detection across codes is unbalanced with respect to 
+the generating LLMs, due to other factors such as the use of different 
+prompts during generation.
 \subsubsection{LLMPL}
 
 
