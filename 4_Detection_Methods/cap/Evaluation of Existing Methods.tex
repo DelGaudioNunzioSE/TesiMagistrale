@@ -150,7 +150,7 @@ but was also tested by its authors on code detection.
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{img/BiScope/codetest.png}
-    \caption{BiScope official code result}
+    \caption{BiScope official code result from BiScope paper}
     \label{fig:BiScope official code result}
 \end{figure}
 
@@ -382,6 +382,12 @@ reduce the F1-score by more than 0.1.
 To use this method, the previously described framework~\ref{section:Test framework} 
 was therefore used (with slight modifications) to generate code rewrites on a 
 dataset. In this way it was possible to run tests on the various available datasets.
+
+It is important to note that, since CodeBERT was not retrained for the tests 
+conducted on this method, the model used to rewrite the code is one of those 
+adopted during CodeBERT’s training 
+(\href{https://huggingface.co/codellama/CodeLlama-13b-Instruct-hf}{CodeLlama-13-Instruct}\cite{roziere2023code}).
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{img/UncoveringLLM/framework.jpg}
@@ -533,13 +539,34 @@ Tests were also conducted with the LLMs used in the original work:
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{CodeMirage test}
-The first tests were conducted on CodeMirage with a very important 
-precaution. The non-zero-shot models were trained on a different dataset 
-(CoDet-M4\ref{section:CoDet-M4}, with clean code, i.e., code from which every 
-comment was removed). Moreover, in all analysed code, all comments were 
-removed across languages to ensure that no method relies on natural 
-language for detection.
+\clearpage
+\subsection{Tests}
+\subsubsection{Out-Of- Domain tests}
+In this testing phase, the methods are evaluated on 
+CodeMirage but were trained on a different dataset 
+(CoDet for BiScope and GPTSniffer; the UncoveringLLM 
+model was not retrained; Mamba perplexity and Binoculars 
+do not require training). These tests are useful both for 
+assessing out-of-domain performance and for making qualitative 
+considerations about the ability of the method to generalize 
+LLM code characteristics. If a method shows high accuracy on 
+an LLM seen during training but extremely low accuracy on 
+unseen LLMs, it can be concluded that the method is poorly 
+generalizable. If instead the performance remains roughly 
+the same across different LLMs, it can be concluded that 
+the detection method does not learn the “style” of a 
+specific LLM but intrinsic characteristics of code 
+generation through transformers.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img/1/Untitled - LLM over dataset.jpg}
+    \caption{The different LLMs familys inside the datasets.}
+    \label{fig:LLMOverDataset}
+\end{figure}
+
+
 
 \subsubsection{BiScope-improved}
 
