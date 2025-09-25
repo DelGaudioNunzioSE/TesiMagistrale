@@ -755,7 +755,7 @@ as proposed in the previous sections. First, the datasets with different types o
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\linewidth]{img/TEST/CodeT5/CodemirageAIG/c4956c36c6626a77f6652d1ebf105dbfddb991daccefd5e07418da50.png}
+    \includegraphics[width=0.5\linewidth]{img/TEST/CodeT5/CodemirageAIG/UncoveringCT5+.png}
     \caption{CodeT5 test AIGCode}
     \label{fig:c2}
 \end{figure}
@@ -764,7 +764,7 @@ as proposed in the previous sections. First, the datasets with different types o
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\linewidth]{img/TEST/UncovernngLLM/AIG/365f48f93ad10f5ecc7e4f2463f93e709c3fd20daa6db7c4d53cb69f.png}
+    \includegraphics[width=0.5\linewidth]{img/TEST/UncovernngLLM/AIG/Uncovering.png}
     \caption{UncovernngLLM test AIGCode}
     \label{fig:c3}
 \end{figure}
@@ -858,19 +858,44 @@ Anyway, the tests conducted between the model trained with
 Lora and the model trained on a smaller sub-dataset without 
 Lora lead to the preference for the model without Lora.
 
+A test was also conducted on inference quantization, and in that 
+case, the TPR@FPR=10\% performance was halved. For this 
+reason, quantization is not recommended.
+
+Quantization in Transformers means storing weights, activations, 
+and the KV-cache with fewer bits to cut memory and bandwidth while 
+keeping accuracy within acceptable limits.
+
+At its core you map real numbers to integers using a scale 
+(and sometimes a zero-point). During inference you multiply 
+the small integers by the scale to recover approximate real 
+values. This is cheap, and it lets the heavy matrix multiplies 
+run on fast low-precision kernels.
+
+Why it matters for Transformers: these models are bandwidth 
+bound. Self-attention and MLP blocks move a lot of data, and 
+the KV-cache grows linearly with sequence length. Dropping 
+from FP16 to INT8 or INT4 often shifts the bottleneck and 
+yields higher throughput and lower memory use without retraining.
 
 \begin{figure}[H]
     \begin{subfigure}[b]{0.45\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{img/TEST/CodeT5/CodemirageAIG/c4956c36c6626a77f6652d1ebf105dbfddb991daccefd5e07418da50.png}
+        \includegraphics[width=\linewidth]{img/TEST/CodeT5/CodemirageAIG/noolora.png}
         \caption{CodeT5 test AIGCode}
         \label{fig:NOLora}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.45\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{img/eb8b31047f0e2de82bd042598326e89a9a5df1159f63c81e41cff8ed.png}
+        \includegraphics[width=\linewidth]{img/lorap.png}
         \caption{AIGCode Test with Lora}
         \label{fig:Lora}
     \end{subfigure}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{img/quant.png}
+    \caption{quant 8-bit test}
+    \label{fig:quant}
 \end{figure}
