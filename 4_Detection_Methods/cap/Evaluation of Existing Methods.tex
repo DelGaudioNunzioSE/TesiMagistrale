@@ -787,6 +787,37 @@ even for CodeT5+. For this reason, a decision was made: to use the most promisin
 we give up the ability to detect small code snippets but aim to achieve better results 
 with larger code samples.
 
+
+
+\subsubsection{Pan tests}
+In the end, it is useful to perform one final test: 
+evaluating whether the detection method's results tend to 
+differ depending on whether the code is functional or not. 
+The reason behind this test is that if the method appears to 
+disproportionately detect non-functional code, it could indicate 
+that there was a correlation between functional and non-functional 
+code in the training datasets, and that CodeT5 might have learned 
+to detect errors in non-functional code rather than understanding 
+the intrinsic characteristics of LLM-generated code.
+
+
+\begin{figure}[H]
+    \begin{subfigure}[b]{0.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/ok.png}
+        \caption{COdetT5+ Pan good code}
+        \label{fig:6}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/no.png}
+        \caption{COdetT5+ Pan bad code}
+        \label{fig:b6}
+    \end{subfigure}
+\end{figure}
+Given the tests, there does not appear to be any significant difference.
+
 \subsection{Proposed Improvements}
 Given the tests, it seems clear that the method capable of achieving 
 the best TPR@FPR=10\% is GPTSniffer/CodeT5+. However, it cannot be denied 
