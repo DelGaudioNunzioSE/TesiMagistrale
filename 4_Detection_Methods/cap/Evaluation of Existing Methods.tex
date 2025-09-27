@@ -390,6 +390,21 @@ conducted on this method, the model used to rewrite the code is one of those
 adopted during CodeBERT’s training 
 (\href{https://huggingface.co/codellama/CodeLlama-13b-Instruct-hf}{CodeLlama-13-Instruct}\cite{roziere2023code}).
 
+Although it would have been interesting, no experiment was conducted to evaluate 
+the inference time of each method. Nevertheless, it is worth noting that this method 
+is certainly the one requiring the most execution time and the greatest hardware 
+availability among those presented. A possible practical implementation could allow 
+a user who wants to detect a specific code to independently request an LLM accessible 
+via the web to rewrite the code, and then copy it into the detection platform. 
+However, this approach would be impractical, as it would introduce bias in detection 
+depending on which LLM was used for the rewrite (e.g., if a user uses GPT to rewrite 
+but the code was originally written by CodeLlama, the probability of correct detection 
+could decrease).
+
+This method, however, is consistent with the assumption that LLMs tend to have a 
+programming style regardless of temperature and prompt used for code generation \textit{(an 
+assumption that remains unproven)}.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{img/UncoveringLLM/framework.jpg}
@@ -574,7 +589,7 @@ The soruces of the dataset are:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\textwidth]{img/1/Untitled-7.pdf}
+    \includegraphics[width=0.8\textwidth]{img/1/Untitled-7.pdf}
     \caption{The different LLMs familys inside the datasets.}
     \label{fig:LLMOverDataset}
 \end{figure}
@@ -759,6 +774,7 @@ probably attributable to the pre-training of CodeT5+.
 Rather than stopping at the initial results, it is important to conduct a broader analysis, 
 as proposed in the previous sections. 
 This time, the same models were tested on the AIGCode dataset to evaluate performance on competitive code.
+It should be recalled that the only language present in this dataset is Python, so no accuracy by language will be reported.
 \begin{itemize}
 \item \textbf{different out-domain tests:} the model is trained and tested on different datasets. \textit{This dataset has a smaller code than CodeMirage}
 \item \textbf{LLM generalization tests:} The test set includes different LLM from the traing set.
@@ -840,14 +856,14 @@ UncoveringLLM and then tested on CoDet solely to evaluate
 any performance differences given the different training sets. 
 
 \begin{figure}[H]
-    \begin{subfigure}[b]{0.4\textwidth}
+    \begin{subfigure}[b]{0.45\textwidth}
         \centering
         \includegraphics[width=\linewidth]{img/codemiragetrain1.png}
         \caption{Codemirage train Codet Test}
         \label{fig:ffesfe6}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[t]{0.4\textwidth}
+    \begin{subfigure}[b]{0.4\textwidth}
         \centering
         \includegraphics[width=\linewidth]{img/uncoveringTrain.png}
         \caption{UncoveringLLM train Codet Test}
@@ -858,14 +874,14 @@ any performance differences given the different training sets.
 
 
 \begin{figure}[H]
-    \begin{subfigure}[b]{0.4\textwidth}
+    \begin{subfigure}[b]{0.45\textwidth}
         \centering
         \includegraphics[width=\linewidth]{img/condemiragetrainbiscope.png}
         \caption{Codemirage train Codet Test}
         \label{fig:ffesfe6}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[t]{0.4\textwidth}
+    \begin{subfigure}[b]{0.4\textwidth}
         \centering
         \includegraphics[width=\linewidth]{img/uncoveringiscope.png}
         \caption{UncoveringLLM train Codet Test}
@@ -922,9 +938,19 @@ method cannot be considered usable in a real-world environment. Nevertheless,
 it is also the most promising method, and for this reason, GPTSniffer/CodeT5+ 
 will be the method proposed for implementation. Before doing so, some final 
 tests and training phases were conducted: first, the entire CodeMirage 
-dataset was used for training, and to make this training feasible, the 
-Lora method was applied.
+dataset was used for training, and to make this training feasible.
 
+\subsubsection{LoRA}
+The possibility of using LoRA to make the training of CodeT5+ 
+more manageable was evaluated.
+Making training less onerous on CodeT5+ would allow the training 
+dataset size to be expanded more easily. For this reason, a test was 
+carried out in which training without LoRA uses a smaller dataset (50\% less).
+
+LoRA operates by freezing the pre-trained model weights and injecting 
+two low-rank matrices, \( A \in \mathbb{R}^{d \times r} \) and 
+\( B \in \mathbb{R}^{r \times k} \), into each layer of the 
+transformer model.
 
 \begin{figure}[H]
     \centering
@@ -932,10 +958,7 @@ Lora method was applied.
     \caption{Lora learning method}
     \label{fig:Lora}
 \end{figure}
-LoRA operates by freezing the pre-trained model weights and injecting 
-two low-rank matrices, \( A \in \mathbb{R}^{d \times r} \) and 
-\( B \in \mathbb{R}^{r \times k} \), into each layer of the 
-transformer model. The weight update is approximated as:
+ The weight update is approximated as:
 \[
 \Delta W = A \cdot B
 \]
@@ -954,9 +977,11 @@ Anyway, the tests conducted between the model trained with
 Lora and the model trained on a smaller sub-dataset without 
 Lora lead to the preference for the model without Lora.
 
-A test was also conducted on inference quantization, and in that 
-case, the TPR@FPR=10\% performance was halved. For this 
-reason, quantization is not recommended.
+\subsubsection{Quantization}
+The possibility of quantizing CodeT5+ at inference time was also evaluated. 
+If favourable, this would allow the method to run on cheaper hardware with faster execution times.
+
+
 
 Quantization in Transformers means storing weights, activations, 
 and the KV-cache with fewer bits to cut memory and bandwidth while 
@@ -968,11 +993,9 @@ the small integers by the scale to recover approximate real
 values. This is cheap, and it lets the heavy matrix multiplies 
 run on fast low-precision kernels.
 
-Why it matters for Transformers: these models are bandwidth 
-bound. Self-attention and MLP blocks move a lot of data, and 
-the KV-cache grows linearly with sequence length. Dropping 
-from FP16 to INT8 or INT4 often shifts the bottleneck and 
-yields higher throughput and lower memory use without retraining.
+The test on inference quantization, the TPR@FPR=10\% 
+performance was halved. For this 
+reason, quantization is not recommended.
 
 \begin{figure}[H]
     \begin{subfigure}[b]{0.45\textwidth}
