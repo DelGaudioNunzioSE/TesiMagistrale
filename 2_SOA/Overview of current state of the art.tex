@@ -20,10 +20,10 @@ Some researchers have attempted to provide suitable datasets for training
 detection models, such as CoDet-M4 \cite{orel2025codet,} and 
 AIGCodeSet \cite{demirok2024aigcodeset}, but 
 these datasets have not been widely adopted by subsequent studies. 
-"Patents and innovation: an empirical study." \cite{suh2024empirical} 
-it was made an effort to survey existing detection methods for 
+In "Patents and innovation: an empirical study." \cite{suh2024empirical} 
+was made an effort to survey existing detection methods for 
 LLM-generated code, but the overview is incomplete as it does not include 
-more recent contributions.
+more recent contributions. Instead, they primarily test methods designed for natural text on code.
 Only one study has attempted to test some of the SOTA methods 
 ("CodeMirage: A Multi-Lingual Benchmark for Detecting AI-Generated and 
 Paraphrased Source Code from Production-Level LLMs" \cite{guo2025codemirage}). 
@@ -60,9 +60,12 @@ languages, commonly including C++ and Java.
 
 Despite the variety of methods and works proposed, 
 most of these papers are still in a pre-publication state. 
-Some report overly optimistic results, others have not released the 
-code or models presented in their work, and others have released only 
+Some report overly optimistic results, others have \textbf{not released the 
+code or models presented in their work}, and others have released only 
 part of the work.
+For this reason, despite the existence of several methods 
+proposed in the literature with more than positive performance, 
+\textbf{it will only be possible to evaluate a limited set}.
 
 It is also important to note that many papers in the literature address 
 related but distinct problems, such as watermarking 

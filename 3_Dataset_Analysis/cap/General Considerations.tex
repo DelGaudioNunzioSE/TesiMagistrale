@@ -35,8 +35,8 @@ checks, none explicitly mention functional testing.
 \newpage
 \subsection{Test framework}
 \label{section:Test framework}
-Given the evaluations presented by the works I propose, 
-the detection methods, it was necessary to develop a framework that 
+In order to evaluate a possible correlation between correct and incorrect 
+ code and LLM code detection, it was necessary to create a framework that 
 could ensure the LLM code was certainly correct. The minimum result was 
 to obtain at least a subdataset that would allow evaluating whether there was a 
 difference between detection of functioning and non-functioning code.
@@ -65,7 +65,7 @@ The framework was divided into several sections, so it could be easily modified 
 potential future needs that required dataset generation by an LLM.
 
 \begin{enumerate}
-\item \textbf{Input:}The framework is capable of processing any dataset 
+\item \textbf{Input:} The framework is capable of processing any dataset 
 that contains both LLM-generated code and human code that solve the same problem.
 
 \item \textbf{Input\textbackslash Data preparatin:} Any supported dataset is converted into a JSON file, 

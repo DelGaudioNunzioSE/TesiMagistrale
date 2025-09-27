@@ -100,16 +100,14 @@ So the final role of the dataset will be:
         \item correct code vs wrong code evaluation
     \end{itemize}
 
-    \item \textbf{CoDET-M4:}
-    \begin{itemize}
-        \item Traning set for AI based detection
-    \end{itemize}
 \end{itemize}
 
-It is important to note that in subsequent phases it will be indicated that, 
-for some methods, the entire available dataset will not be used, possibly to 
-avoid training or test sessions that are too long. To alleviate this issue, a 
-framework was developed to perfectly balance any requested sub-dataset through a 
-convenient graphical interface. This topic will be revisited later in Chapter 5.
+It is important to note that for the subsequent tests, it was not possible 
+to evaluate the methods on the entire dataset due to the high testing and 
+training times. For this reason, each method will be tested on the same 
+subset of 1000 elements per test. To ensure that these 1000 elements are 
+balanced across various factors such as LLM generators and programming 
+languages, a framework with an interface was developed to automatically 
+balance these datasets. This topic will be revisited later in Chapter 5.
 
 
