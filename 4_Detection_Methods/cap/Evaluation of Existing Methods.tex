@@ -290,6 +290,18 @@ It can also be noted that at FPR = 1\% the TPR decreases by a non-negligible
 amount. This means that, under these conditions, the model is usable only by 
 accepting an error probability of about 10\% or slightly less.
 
+\paragraph{Biscope standard results}
+It is easy to notice that standard BiScope shows results different 
+from those reported in the CodeMirage tests \ref{fig:CodeMirage-tests}. 
+This may be due to several possible reasons:
+\begin{itemize}
+\item Since the authors of CodeMirage are also the authors of BiScope, 
+they might possess an implementation of the code different from the one 
+published on GitHub.
+\item They might have used an LLM different from the one indicated on GitHub.
+\item Performance may have decreased due to the removal of comments from the code.
+\end{itemize}
+
 \clearpage
 \subsubsection{GPTSniffer-CodeT5+ multilingual}
 This method is based on another work, GPTSniffer\cite{nguyen2024gptsniffer}, 
@@ -333,7 +345,7 @@ To evaluate the improvements introduced by changing the LLM, in-domain tests
 were conducted on the CodeMirage dataset.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{img/CodeT5/default.png}
+    \includegraphics[width=0.6\textwidth]{img/c417a8ce5c9471cc3376985dcd3c92917482dbce03e702dccf49c684.png}
     \caption{CodeT5 tests with multilingual preprocessing CodeMirage in-domain test.}
     \label{fig:CodeT5 tests with multilingual preprocessing}
 \end{figure}
