@@ -117,13 +117,28 @@
 
 
 
+
+\newenvironment{dedication}
+  {\clearpage           % we want a new page
+   \thispagestyle{empty}% no header and footer
+   \vspace*{\stretch{1}}% some space at the top 
+   \itshape             % the text is in italics
+   \raggedleft          % flush to the right margin
+  }
+  {\par % end the paragraph
+   \vspace{\stretch{3}} % space at bottom is three times that at the top
+   \clearpage           % finish off the page
+  }
+
+\begin{dedication}
+    {\fontsize{12}{12}\selectfont{I don't need sleep.\\I need answers.}}
+\end{dedication}
+
+\input{abstract.tex}
+\clearpage
 \justifying
-
-\newpage
-\thispagestyle{empty}
-
-
 \tableofcontents
+
 
 \input{1_introduction/Introduction.tex}
 \input{2_SOA/Overview of current state of the art.tex}

@@ -80,7 +80,13 @@ The security issues are highlighted by the study
 \textit{”Do Users Write More Insecure Code with AI Assistants?”} 
 \cite{perry2022users}. This study shows a decrease in
 code security simply by using an AI assistant instead of
-traditional programming.
+traditional programming. Another interesting study is 
+\textit{”The Hidden Risks of LLM-Generated Web
+Application Code”} \cite{dora2025hidden} 
+examine how models such as ChatGPT, Claude, Gemini, and others generate 
+web code that does not meet fundamental security requirements 
+(input validation, secure sessions, HTTP headers).
+\ref{fig:security}
 
 %Relevant studies that address this concern include: 
 %Suh et al. \cite{suh2024empirical}, 
@@ -119,7 +125,7 @@ it's a tangible risk \cite{DoeVGitHub2024}.
 \vspace{1\baselineskip}
 \noindent
 
-The least important reason, 
+An other important reason, 
 which directly 
 concerns the development of code-oriented 
 LLMs themselves, is the need to distinguish 
@@ -155,4 +161,16 @@ increasingly outdated data.
         LLM usage and students' final performance.}
 
     \label{fig:scatterplot}
+\end{figure}
+
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{img/Pagine da 2504.20612v1.pdf}
+    \caption{Risk Assessment of LLMs Across Different Risk Levels: This radar chart visualization compares various LLMs—
+Grok, GPT, Gemini, Claude, and DeepSeek across six risk categories: Extreme, Very High, High, Medium, Low, and
+Very Low. The red-shaded regions indicate the relative risk scores for each model in the respective risk categories}
+
+    \label{fig:security}
 \end{figure}

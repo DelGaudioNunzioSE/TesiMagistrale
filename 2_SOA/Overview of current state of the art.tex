@@ -1,6 +1,6 @@
 \clearpage
 
-\chapter{Overview of current state of the art}
+\chapter{Related works}
 
 Before analysing the individual contributions, 
 it is necessary to understand the current state 
@@ -24,11 +24,21 @@ In "Patents and innovation: an empirical study." \cite{suh2024empirical}
 was made an effort to survey existing detection methods for 
 LLM-generated code, but the overview is incomplete as it does not include 
 more recent contributions. Instead, they primarily test methods designed for natural text on code.
-Only one study has attempted to test some of the SOTA methods 
+Only one study has attempted to test some of the state of the art methods 
 ("CodeMirage: A Multi-Lingual Benchmark for Detecting AI-Generated and 
 Paraphrased Source Code from Production-Level LLMs" \cite{guo2025codemirage}). 
 However, this work presents several issues that 
 will be discussed in the thesis.
+Briefly, \textbf{we note the lack of testing detection methods on 
+different code types (out-of-domain tests) and the removal of natural 
+text within code (comment elimination)} \ref{fig:codemirage example}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/CodeMirage/code example2.png}
+    \caption{codemirage code example with large comment sections}
+    \label{fig:codemirage example}
+\end{figure}
 
 The proposed methods to detect LLM generated code
 vary significantly in their approaches: for example, 
@@ -86,3 +96,5 @@ addressed in this thesis. This variety of objectives and approaches
 clearly reflects the dynamic and evolving nature of the field, reinforcing 
 the need for a solid, comparative foundation on which to build a functional 
 and user-oriented detection system.
+
+

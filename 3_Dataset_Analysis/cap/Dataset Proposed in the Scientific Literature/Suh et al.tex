@@ -11,10 +11,18 @@ separate contribution.
 
 
 \begin{itemize}
-    \item \textbf{GPT (GPT-3.5)}: 
-    \item \textbf{GPT-4}: 
-    \item \textbf{Gemini Pro (Gemini 1.0)}: 
-    \item \textbf{Starcoder2-Insgruct (15B)}: 
+    \item \textbf{GPT (GPT-3.5)}: Improved variant of GPT-3 with 
+    fine-tuning and alignment, optimized for conversation and for 
+    generating both text and code.
+    \item \textbf{GPT-4}: Successor of GPT-3.5 with enhanced 
+    capabilities in reasoning, context understanding, robustness, 
+    and multilingual/technical generation.
+    \item \textbf{Gemini Pro (Gemini 1.0)}: Model from the Gemini 
+    family (Google/DeepMind), “Pro” version of release 1.0. ACM Digital Library.
+    Gemini is a multimodal model with capabilities in text, images, video, audio, etc.
+    \item \textbf{Starcoder2-Insgruct (15B)}: “Instruct” version of the 
+    StarCoder2 model with 15 billion parameters, 
+    featuring a transparent and permissive pipeline.
 \end{itemize}
 
 %%%%
@@ -24,9 +32,11 @@ separate contribution.
 \begin{itemize}
     \item Use different domain dataset.
     \begin{itemize}
-        \item \textbf{MBPP}: didactic dataset
-        \item \textbf{humaneEval-x}: a dataset form OpenAI
-        \item \textbf{Code Search Net}: 
+        \item \textbf{MBPP} \cite{austin2021mbpp}: A dataset of 974 Python programming tasks solvable by entry-level programmers.
+        \item Each task includes: a natural language description, function signature, canonical implementation, and 3 unit tests.
+        \item \textbf{humaneEval-x} \cite{chen2021codex}: A benchmark released by OpenAI with 164 hand-written programming tasks in Python.
+        \item \textbf{Code Search Net} \cite{codesearchnet2019}: A benchmark corpus 
+        for code retrieval tasks. Models are given a natural language query and must retrieve relevant code functions across multiple programming languages (e.g. Python, Java, etc.).
     \end{itemize}
 \end{itemize}
 
@@ -35,8 +45,10 @@ separate contribution.
 %%%%
 \subsubsection*{Weaknesses}
 \begin{itemize}
-    \item It is difficult to obtain the dataset
-    (Dataset creation is not the aim of the paper).
+    \item \textbf{Unfortunately, the data they used is no longer available 
+through the official portals, which, at the time of writing, 
+are no longer accessible. As a result, this dataset is 
+effectively unusable.}.
 \end{itemize}
 
 
@@ -74,7 +86,4 @@ In order to preserve quality in the LLMs code source:
 \evaluationTable{Suh}
 
 
-\textbf{Unfortunately, the data they used is no longer available 
-through the official portals, which, at the time of writing, 
-are no longer accessible. As a result, this dataset is 
-effectively unusable.}
+

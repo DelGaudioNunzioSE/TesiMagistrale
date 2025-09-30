@@ -9,7 +9,7 @@ LLM-generated code would, before committing it,
 most certainly run at least one test to verify that the 
 code works. Moreover, for our purposes 
 (\hyperref[sec:Motivations Behind LLM-Generated Code Detection]{Section 1.2}), 
-whether a student or candidate submits non-functional 
+whether a student or candidate submits not working 
 code, it makes little difference whether it was written by them or 
 by an LLM. 
 
@@ -23,7 +23,7 @@ than detecting incorrect code, both with our method and
 baselines.’~\cite{ye2023uncovering}
 
 Therefore, the consideration that every detection method 
-should be evaluated specifically on \textbf{functional} LLM-generated code, 
+should be evaluated specifically on \textbf{working} LLM-generated code, 
 rather than on LLM code in general, proves useful in preventing a 
 significant gap between the reported metrics and the actual user 
 experience. Such a gap may arise if detection methods exhibit a 
@@ -36,7 +36,7 @@ checks, none explicitly mention functional testing.
 \subsection{Test framework}
 \label{section:Test framework}
 In order to evaluate a possible correlation between correct and incorrect 
- code and LLM code detection, it was necessary to create a framework that 
+code and LLM code detection, it was necessary to create a framework that 
 could ensure the LLM code was certainly correct. The minimum result was 
 to obtain at least a subdataset that would allow evaluating whether there was a 
 difference between detection of functioning and non-functioning code.

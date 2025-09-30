@@ -5,7 +5,7 @@ The history of code generation can be explored from several
 perspectives. 
 
 \subsection{Natural Language Processing} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-One possible starting point possible perspective for 
+One possible starting point for 
 analysing the evolution of code generation is to trace
 the development of Natural Language Processing (NLP), 
 the field that studies how machines process and interact 
@@ -77,9 +77,7 @@ and Code LLaMA \cite{roziere2023code}.
 
 \subsection{Code Generator} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \label{sec:Code_Generator}
-Another possible point of view is the one focused on code 
-generation itself. This is not a  completely new concept: 
-it dates back to 1957 with Fortran. Fortran is both a 
+Fortran is a 
 programming language with an integrated compiler, developed by IBM. 
 A compiler can be seen as a code generation tool, since it 
 translates source code into machine code, the only “language” 
@@ -104,7 +102,7 @@ expressions.
 At the same time, template-engine-based tools  for server-side 
 spread, such as Jinja2 (2005)\cite{jinja2docs} 
 and Mako (2006)\cite{makoengine}, 
-which allowed the generation of 
+was developed the generation of 
 dynamic code by combining data with predefined structures. 
 
 In 2017, with research on AST-guided code generation, LSTM 
@@ -112,7 +110,7 @@ models began to be used to generate code in a more structured
 way, guided by the syntax of the programming language 
 \cite{yin2017syntactic}.
 
-Finally, in 2021, with GitHub Copilot, one of the most advanced 
+In 2021 GitHub Copilot, one of the most advanced 
 code completion tools was introduced: so efficient that it is 
 capable of generating entire code sections from simple textual 
 prompts, thanks to the use of generative AI models based on 
@@ -122,10 +120,11 @@ Transformer architectures \cite{chen2021codex}.
 
 
 \subsection{LLMs code oriented} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Another possible starting point is from the publication of the 
-paper \textit{Attention Is All You Need} in 2017, which 
-introduced the Transformer architecture \cite{vaswani2017attention}
-and, enabled the widespread development of
+The publication of the 
+paper \textit{Attention Is All You Need} \cite{vaswani2017attention} 
+in 2017, which 
+introduced the Transformer architecture, 
+enabled the widespread development of
 Large Language Models (LLMs). 
 It should be noted that the first LLMs were typically designed 
 to analyse and generate only natural language text, so not all LLMs 
@@ -180,7 +179,7 @@ first attempt, significantly outperforming all previous
 models on code generation.
 
 Codex \cite{chen2021codex} sparked widespread interest in the use of LLMs 
-for code generation, indeed in the same year is released 
+for code generation, indeed in the same year it was released 
 GitHub Copilot, powered by Codex \cite{chen2021codex}.
 
 In the same year, 
@@ -219,8 +218,7 @@ participants.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.8\textwidth]{img/1/image.png}
-    \caption{The code completion performance of competitive models on five benchmarks,
-Humaneval-FIM, SAFIM, CrossCodeEval, RepoEval, CrossCodeLongEval from \cite{hui2024qwen2}.}
+    \includegraphics[width=0.8\textwidth]{img/CodeGenerator.png}
+    \caption{Timeline of code generation by LLM \cite{wu2022research}.}
     \label{fig:LLM-coder-examples}
 \end{figure}

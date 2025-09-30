@@ -556,8 +556,9 @@ LLMs the same criterion used for LLMPPL was applied.
 In this section, the results of the various tests proposed in the previous sections will be shown.
 To assess result variability, the standard deviation computed over 5 k-folds, 
 each balanced with the same number of programming languages and generating 
-LLMs—will be shown as a red bar in the plots.
-The F1 score is calculated using the threshold that maximizes the F1 score.
+LLMs, will be shown as a red bar in the plots.
+The F1 score shown is \textit{F1-Macro}, i.e., the mean of the F1 values computed across the 5 k-folds.
+The F1 score inside a fold is calculated using the threshold that maximizes the F1 score.
 The accuracies are computed using a standard probability threshold (0.5).
 
 \subsubsection{Training}
@@ -594,7 +595,7 @@ The soruces of the dataset are:
     \label{fig:LLMOverDataset}
 \end{figure}
 
-\clearpage
+
 \subsubsection{CodeMirage tests}
 
 Let recall the utilities behind CodeMirage \cite{guo2025codemirage} test:
@@ -649,7 +650,7 @@ an accuracy of 50\% indicates a random choice}.
         \label{fig:b1}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.4\textwidth}
+    \begin{subfigure}[b]{0.5\textwidth}
         \centering
         \includegraphics[width=\linewidth]{img/TEST/BiScope/eeb.png}
         \caption{BiScope-improved test Codemirage}
@@ -677,7 +678,7 @@ an accuracy of 50\% indicates a random choice}.
         \label{fig:ab2}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[t]{0.4\textwidth}
+    \begin{subfigure}[t]{0.5\textwidth}
         \centering
         \includegraphics[width=\linewidth]{img/TEST/CodeT5/oioi.png}
         \caption{CodeT5+ test Codemirage accuracy}
@@ -688,20 +689,28 @@ an accuracy of 50\% indicates a random choice}.
 
 
 
-    % Riga 3
+
 \begin{figure}[H]
-    \begin{subfigure}[b]{0.4\textwidth}
+    \centering
+    \begin{subfigure}[t]{0.35\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{img/TEST/UncovernngLLM/ccffd05754577a21cc6a59268a66bfd331e7843ede30c92a0f3a8403.png}
-        \caption{UncovernngLLM test Codemirage}
-        \label{fig:3}
+        \includegraphics[width=\linewidth]{img/TEST/UncovernngLLM/visualization(57).png}
+        \caption{UncovernngLLM test Codemirage accuracy}
+        \label{fig:esfes2}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[t]{0.4\textwidth}
+    \begin{subfigure}[t]{0.35\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{img/TEST/UncovernngLLM/visualization(311).png}
-        \caption{UncovernngLLM test Codemirage accuracy at FPR=10\%}
-        \label{fig:b3}
+        \includegraphics[width=\linewidth]{img/TEST/UncovernngLLM/visualization(58).png}
+        \caption{UncovernngLLM test Codemirage accuracy}
+        \label{fig:ab2eresre}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/TEST/UncovernngLLM/72140877550d8b4c252d3271edd3cb9f2891b4de5c29b29a599cb14b.png}
+        \caption{UncovernngLLM test Codemirage}
+        \label{fig:b2fsefde}
     \end{subfigure}
 \end{figure}
 
@@ -711,14 +720,14 @@ an accuracy of 50\% indicates a random choice}.
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[t]{0.4\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\linewidth]{img/TEST/Binacularis_standard/UncoveringTest.png}
         \caption{Binacularis standard test Codemirage}
         \label{fig:b2gg}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[t]{0.4\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\linewidth]{img/TEST/Binacularis_standard/visualization(44).png}
         \caption{Binacularis standard test Codemirage accuracy}
@@ -729,14 +738,14 @@ an accuracy of 50\% indicates a random choice}.
 
 \begin{figure}[H]
     \centering
-    \begin{subfigure}[b]{0.4\textwidth}
+    \begin{subfigure}[b]{0.45\textwidth}
         \centering
         \includegraphics[width=\linewidth]{img/TEST/LLMPPL/UncoveringTest.png}
         \caption{LLMPPL test Codemirage}
         \label{fig:6}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[t]{0.4\textwidth}
+    \begin{subfigure}[t]{0.45\textwidth}
         \centering
         \includegraphics[width=\linewidth]{img/TEST/LLMPPL/visualization(34).png}
         \caption{LLMPPL test Codemirage accuracy}
@@ -826,7 +835,7 @@ It should be recalled that the only language present in this dataset is Python, 
     \hfill
     \begin{subfigure}[t]{0.4\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{img/TEST/UncovernngLLM/AIG/acc.png}
+        \includegraphics[width=\linewidth]{img/TEST/UncovernngLLM/visualization(59).png}
         \caption{UncovernngLLM accuracy }
         \label{fig:cc3}
     \end{subfigure}

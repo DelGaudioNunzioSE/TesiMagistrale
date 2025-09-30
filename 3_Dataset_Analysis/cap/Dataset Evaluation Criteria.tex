@@ -25,7 +25,7 @@ will be assessed based on the following criteria:
         \item \textbf{Actual degree of use in contemporary times:}
         while it is desirable for detection methods to have 
         long-term viability, it is undeniable that a detector 
-        effective on current LLMs (such as GPT-4 \cite{openai2023gpt4}) is more useful 
+        effective on current LLMs (such as GPT-5 \cite{openai2025gpt5}) is more useful 
         than one targeting outdated models (such as GPT-3 \cite{brown2020language}).
         \item \textbf{Actual types diversity among LLMs:}
         it is also necessary to analyse the diversity of the models 
@@ -55,11 +55,11 @@ will be assessed based on the following criteria:
         assessing different detection methods on different languages, 
         possibly recommending specific approaches depending 
         on the language being analysed.
-        \item \textbf{Different types of code:}
+        \item \textbf{Different programming paradigm:}
         although language differences are important, 
         they are not sufficient. Python, for example, 
         can be used both as an object-oriented and a procedural 
-        language. Understanding the type of code being analysed 
+        language. Understanding the programming paradigm of code being analysed 
         can aid both in training and in evaluating a detector.
         \item \textbf{Code size:}
         code length is a key parameter, as the ease of identifying 
@@ -68,11 +68,15 @@ will be assessed based on the following criteria:
         assignments, short code snippets are extremely common.
         \item \textbf{Code context:}
         it is useful to include examples 
-        of human-written code from both competitive settings 
-        (such as Leetcode dataset \cite{xia2025leetcodedataset}) 
-        and open-source project environments 
-        (such as CodeSearchNet \cite{husain2019codesearchnet}), 
-        in order to evaluate detectors across different real-world contexts.
+        of human-written code and prompt from different settings: 
+        \begin{enumerate}
+            \item Competitive programming: short code intended to assess the programmer’s reasoning ability (such as Leetcode \cite{xia2025leetcodedataset}).
+            \item Open source: code typically heavily commented and maintained by multiple programmers with different programming styles (such as CodeSearchNet \cite{husain2019codesearchnet}).
+            \item Academic corpus: Code designed to evaluate an LLM’s ability to generate code (such as HumanEval \cite{chen2021codex}).
+            \item Q\&A: Code from support-request platforms such as \href{https://stackoverflow.com/}{Stack Overflow}.
+            \item industrial code: Code that is typically closed or under paid licenses.
+            \item Test code: Code intended to run tests on a larger program.
+        \end{enumerate}
     \end{enumerate}
 
     \item \textbf{Validity information:} 

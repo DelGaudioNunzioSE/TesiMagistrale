@@ -2,10 +2,10 @@
 \label{section:AiGCodeSet}
 The main contribution of this paper is also the preparation 
 of a dataset for evaluating detection methods. Unlike other 
-works, this dataset includes both functional and non-functional 
+works, this dataset includes both working and not working 
 human-written code, as it evaluates LLM code generation starting 
 both from a plain prompt and from existing code.
-
+They involve the following generator:
 
 \begin{itemize}
     \item \textbf{Gemini 1.5 Flash} \cite{team2024gemini} : 
@@ -74,7 +74,7 @@ In order to preserve quality in the LLMs code source they manually removed:
 \subsubsection*{Final evaluation}
 
 
-\expandafter\def\csname AIGCodeSetHumanCode\endcsname{9,50}
+\expandafter\def\csname AIGCodeSetHumanCode\endcsname{9,500}
 \expandafter\def\csname AIGCodeSetLLMCode\endcsname{5,650}
 \expandafter\def\csname AIGCodeSetNumLLMs\endcsname{3 \textit{Gemini 1.5 Flash, Codestral-22B, CodeLlama-34B}}
 \expandafter\def\csname AIGCodeSetLLMDiversity\endcsname{3 different source models}
