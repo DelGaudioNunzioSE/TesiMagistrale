@@ -49,7 +49,7 @@ The methods tested by CodeMirage can be divided into 4 categories:
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{img/CodeMirage/tests.png}
-    \caption{CodeMirage's tests}
+    \caption{CodeMirage's tests \cite{guo2025codemirage}}
     \label{fig:CodeMirage-tests}
 \end{figure}
 
@@ -120,8 +120,32 @@ A very strong and perhaps obvious statement can therefore be made:
 \textbf{any test on any dataset to which at least comment removal has not been 
 applied is not to be considered valid for LLM code detection}.
 
-
-
+\paragraph{Does performance change between code and cleared code?}
+Despite this claim, it was verified whether the performance of a 
+perplexity-based detection method that showed good results in the 
+CodeMirage tests (BiScope) would change significantly. 
+Once the tests were conducted, the results did not appear 
+to show any real difference in performance. Nevertheless, 
+for the remainder of this work, training and testing will 
+continue to be conducted on clean code in order to ensure 
+that each detection method does not rely on natural text 
+for detection.
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/no_clearpng.png}
+        \caption{Codemirage learning and test over clear code}
+        \label{fig:ttb2gg}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{img/clearù.png}
+        \caption{Codemirage learning and test over not clear code}
+        \label{fig:attb2gg}
+    \end{subfigure}
+\end{figure}
 
 \clearpage
 \subsection{Methods to test}
@@ -269,7 +293,7 @@ tests were conducted on the CodeMirage dataset.
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{img/BiScope/standard/CodemirageOverCodemirage.png}
+        \includegraphics[width=\linewidth]{img/clearcut.png}
         \caption{BiScope standard.}
         \label{fig:BiScope standard.}
     \end{subfigure}
@@ -299,7 +323,6 @@ This may be due to several possible reasons:
 they might possess an implementation of the code different from the one 
 published on GitHub.
 \item They might have used an LLM different from the one indicated on GitHub.
-\item Performance may have decreased due to the removal of comments from the code.
 \end{itemize}
 
 \clearpage
